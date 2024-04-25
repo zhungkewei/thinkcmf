@@ -206,7 +206,8 @@ After setting the cdn, its access address is: static resource cdn address/static
     'UPDATE_THEME_CONFIRM_MSG'                  => 'Are you sure you want to update this theme?',
     'ENABLE_THEME_CONFIRM_MSG'                  => 'Are you sure you want to enable this theme?',
     'UNINSTALL_THEME_CONFIRM_MSG'               => 'The theme data you set will be deleted. Are you sure you want to uninstall this theme?',
-    'x pieces of data, click to add more'       => '{:count} pieces of data, click to add more...'
+    'x pieces of data, click to add more'       => '{:count} pieces of data, click to add more...',
+    'EXPORT_ADMIN_MENU_LANG_CONFIRM_MSG'        => 'Are you sure you want to generate the menu dynamic language pack? Please ensure that the lang directory under the data directory is writable!'
 ];
 
 

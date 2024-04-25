@@ -8,7 +8,7 @@ $(function () {
     $mainIframe = $("#mainiframe");
     $content = $("#content");
     $loading = $("#loading");
-    var headerHeight = 54;
+    var headerHeight = $('.navbar-expand-lg').height();
     $content.height($(window).height() - headerHeight);
 
     $navWraper.height($(window).height() - headerHeight - 40);
@@ -100,13 +100,13 @@ $(function () {
 function calcTaskContentWidth() {
     var width = $("#task-content-inner").width();
     if (($(document).width() - 318 - tabwidth - 30 * 2 - 48) < width) {
-        $("#task-content").width($(document).width() - 318 - tabwidth - 30 * 2 - 48);
+        // $("#task-content").width($(document).width() - 318 - tabwidth - 30 * 2 - 48);
         $("#task-next,#task-pre").show();
         $('#close-all-tabs-btn').show();
     } else {
         $("#task-next,#task-pre").hide();
         $('#close-all-tabs-btn').hide();
-        $("#task-content").width(width);
+        // $("#task-content").width(width);
     }
 }
 
@@ -134,9 +134,18 @@ var task_item_tpl = '<li class="cmf-component-tabitem">' +
 var appiframe_tpl = '<iframe style="width:100%;height: 100%;" frameborder="0" class="appiframe"></iframe>';
 
 function openapp(url, appId, appname, refresh) {
+    // if (GV.IS_MOBILE) {
+    //     window.location.href = url;
+    //     return;
+    // }
     if (GV.IS_MOBILE) {
-        window.location.href = url;
-        return;
+        const myOffcanvasEl = document.querySelector('#offcanvasNavbar')
+        if (myOffcanvasEl) {
+            const myOffcanvas = bootstrap.Offcanvas.getInstance(myOffcanvasEl);
+            if (myOffcanvas) {
+                myOffcanvas.hide();
+            }
+        }
     }
     var $app = $("#task-content-inner li[app-id='" + appId + "']");
     $("#task-content-inner .active").removeClass("active");

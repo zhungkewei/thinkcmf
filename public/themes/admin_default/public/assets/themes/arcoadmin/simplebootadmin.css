@@ -6,6 +6,10 @@ body{
 	padding: 20px;
 }
 
+body.mobile{
+	padding: 5px;
+}
+
 .main-iframe-wrap.wrap{
 	background: transparent;
 	padding: 0;

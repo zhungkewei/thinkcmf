@@ -388,6 +388,10 @@
     margin-left: 200px;
 }
 
+.mobile .main-content{
+    margin-left: 0;
+}
+
 .page-content {
     padding: 8px 20px 24px;
     margin: 0;
@@ -446,12 +450,17 @@
     display: block;
     height: 100%;
     color: #EEE;
-    background-color: transparent
+    background-color: transparent;
+    padding: 0 10px;
+}
+
+.simplewind-nav .dropdown-menu {
+    line-height: 14px;
 }
 
 .simplewind-nav .nav-user-photo {
     max-width: 36px !important;
-    margin: -4px 8px 0 0;
+    /*margin: -4px 8px 0 0;*/
     /*border: 2px solid #FFF;*/
     border-radius: 24px
 }
@@ -487,13 +496,13 @@ ul, ol {
     font-size: 14px;
 }
 
-.cmf-component-tabclose {
-    position: absolute;
-    top: 8px;
-    right: 6px;
-    text-decoration: none;
-    cursor: pointer;
-    display: none;
+.cmf-component-tabitem:hover{
+    background-color: #e9ebee;
+}
+
+.cmf-component-tabitem.active {
+    font-weight: bold;
+    background-color: #e9ebee;
 }
 
 .cmf-component-tabitem:hover .cmf-component-tabclose {
@@ -501,8 +510,13 @@ ul, ol {
     display: block;
 }
 
-.cmf-component-tabitem.active{
-    font-weight: bold;
+.cmf-component-tabclose {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    display: none;
 }
 
 .cmf-component-tabclose-icon {
@@ -535,7 +549,7 @@ ul, ol {
 }
 
 #task-next {
-    right: -30px;
+    left: 0px;
 }
 
 #task-content {
@@ -665,9 +679,9 @@ ul, ol {
 
 .cmf-tabs-item-text {
     font-family: 'Microsoft Yahei', verdana;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: blod;
-    line-height: 30px;
+    line-height: 54px;
     color: #010101;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -712,7 +726,7 @@ ul, ol {
     background: transparent;
 }
 
-#refresh-wrapper,#close-wrapper{
+#refresh-wrapper, #close-wrapper {
     color: #4E5969;
 }
 

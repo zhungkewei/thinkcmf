@@ -13,7 +13,7 @@
     <link href="__TMPL__/public/assets/fontawesome/css/v4-shims.min.css" rel="stylesheet" type="text/css">
     <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style('arcoadmin')}/simplebootadmin.css" rel="stylesheet">
     <php>
-        $is_mobile=cmf_is_mobile();
+        $_is_mobile=cmf_is_mobile();
         $_static_version='1.0.5';
         $cmf_version=cmf_version();
         if (preg_match("/^(8|6)\./",$cmf_version)) {
@@ -30,7 +30,7 @@
             JS_ROOT: "static/js/",
             API_ROOT: {api: '__WEB_ROOT__/api/'},
             APP: '{$_app}'/*当前应用名*/,
-            IS_MOBILE: {$is_mobile? 'true' : 'false'},
+            IS_MOBILE: {$_is_mobile? 'true' : 'false'},
             lang: function (langKey, params) {
                 var lang = {
                     LOGIN_INVALID_TIPS: "{:lang('LOGIN_INVALID_TIPS')}",
@@ -79,7 +79,7 @@
 
     <block name="head"></block>
 </head>
-<body>
+<body class="{$_is_mobile?'mobile':''}">
 <block name="main"></block>
 <script src="__STATIC__/js/admin.js?v={$_static_version}"></script>
 <block name="scripts"></block>

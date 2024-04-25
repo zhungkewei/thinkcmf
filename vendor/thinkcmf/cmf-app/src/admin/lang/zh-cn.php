@@ -277,6 +277,8 @@ themes/default/public/assets
     'UPDATE_THEME_CONFIRM_MSG'                        => '确定更新此模板吗？',
     'ENABLE_THEME_CONFIRM_MSG'                        => '确定使用此模板吗？',
     'UNINSTALL_THEME_CONFIRM_MSG'                     => '您设置的模板数据将被删除，确定卸载此模板吗？',
-    'x pieces of data, click to add more'=>'{:count}条数据,点击添加更多...'
+    'x pieces of data, click to add more'             => '{:count}条数据,点击添加更多...',
+    'EXPORT_ADMIN_MENU_LANG_CONFIRM_MSG'              => '您确定生成菜单动态语言包吗？请确保data目录下lang目录可写！',
+
 ];
 

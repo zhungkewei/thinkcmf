@@ -2,6 +2,7 @@
 <html style="overflow: hidden;">
 <php>
     $_admin_setting=cmf_get_option('admin_settings');
+    $_is_mobile=cmf_is_mobile();
 </php>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -10,19 +11,13 @@
     <meta charset="utf-8">
     <title>{$_admin_setting.admin_name|default='ThinkCMF'} {:lang('ADMIN_CENTER')}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- HTML5 shim for IE8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <![endif]-->
-    <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style('arcoadmin')}/bootstrap.min.css" rel="stylesheet">
+    <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style('arcoadmin')}/bootstrap5/bootstrap.min.css"
+          rel="stylesheet">
     <link href="__TMPL__/public/assets/simpleboot/css/simplebootadmin.css" rel="stylesheet">
     <link href="__TMPL__/public/assets/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="__TMPL__/public/assets/fontawesome/css/v4-shims.min.css" rel="stylesheet" type="text/css">
     <link href="__TMPL__/public/assets/themes/{:cmf_get_admin_style('arcoadmin')}/simplebootadminindex.min.css"
           rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <style>
         /*-----------------导航hack--------------------*/
         .nav-list > li.open {
@@ -56,7 +51,6 @@
         /*----------------导航hack--------------------*/
     </style>
     <php>
-        $is_mobile=cmf_is_mobile();
         $_static_version='1.0.0';
     </php>
     <script>
@@ -66,7 +60,7 @@
             ROOT: "__ROOT__/",
             WEB_ROOT: "__WEB_ROOT__/",
             JS_ROOT: "static/js/",
-            IS_MOBILE: {$is_mobile? 'true' : 'false'}
+            IS_MOBILE: {$_is_mobile? 'true' : 'false'}
         };
     </script>
     <php>$submenus=$menus;</php>
@@ -96,13 +90,12 @@
                 <span class="menu-text"> {$menu_name} </span>
             </a>
             <php>}else{</php>
-            <a href="#" class="dropdown-toggle">
+            <a href="#" class="cmf-dropdown-toggle">
                 <i class="{$icon_class}"></i>
                 <span class="menu-text normal"> {$menu_name} </span>
                 <b class="arrow fa fa-angle-right normal"></b>
                 <i class="fa fa-reply back"></i>
-                <span class="menu-text back">返回</span>
-
+                <span class="menu-text back">{:lang('BACK')}</span>
             </a>
 
             <ul class="submenu">
@@ -137,7 +130,7 @@
 								</span>
         </a>
         <php>}else{</php>
-        <a href="#" class="dropdown-toggle">
+        <a href="#" class="cmf-dropdown-toggle">
             <i class="fa fa-caret-right"></i>
             <span class="menu-text">
 									{$menu_name}
@@ -191,41 +184,33 @@
     </if>
 
 </head>
-<php>
-    $is_mobile=cmf_is_mobile();
-
-</php>
-<body style="min-width:{$is_mobile?'auto':'900px'};overflow: hidden;">
+<body style="min-width:{$_is_mobile?'auto':'900px'};overflow: hidden;" class="{$_is_mobile?'mobile':''}">
 <div id="loading"><i class="loadingicon"></i><span>{:lang('LOADING')}</span></div>
-<div class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="{:url('admin/Index/index')}" class="navbar-brand"
-               style="min-width: 199px;text-align: center;font-weight: bold;">
-                <empty name="$_admin_setting.admin_name">
-                    <img src="__TMPL__/public/assets/images/logo.svg" class="navbar-brand-logo"
-                         style="height: 22px;display: inline-block;vertical-align: middle;border-radius: 4px;"/>
-                    <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
-                        ThinkCMF
-                    </span>
-                    <else/>
-                    <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
-                        {$_admin_setting.admin_name}
-                    </span>
-                </empty>
-            </a>
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-
-        <div class="navbar-collapse collapse" id="navbar-main">
-            <div class="pull-left" style="position: relative;">
-                <a id="task-pre" class="task-changebt"><i class="fa fa-chevron-left"></i></a>
+<nav class="navbar navbar-expand-lg p-0" aria-label="Offcanvas navbar large">
+    <div class="container-fluid g-0 me-3">
+        <a class="navbar-brand m-0" href="{:url('admin/Index/index')}"
+           style="min-width: 199px;text-align: center;font-weight: bold;">
+            <empty name="$_admin_setting.admin_name">
+                <img src="__TMPL__/public/assets/images/logo.svg" class="navbar-brand-logo"
+                     style="height: 22px;display: inline-block;vertical-align: middle;border-radius: 4px;"/>
+                <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
+                    ThinkCMF
+                </span>
+                <else/>
+                <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
+                    {$_admin_setting.admin_name}
+                </span>
+            </empty>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse position-relative" id="navbarSupportedContent">
+            <a id="task-pre" class="task-changebt"><i class="fa fa-chevron-left"></i></a>
+            <div style="flex: 1;overflow: auto;width: 0;">
                 <div id="task-content">
-                    <ul class="nav navbar-nav cmf-component-tab" id="task-content-inner">
+                    <ul class="cmf-component-tab" id="task-content-inner">
                         <li class="cmf-component-tabitem noclose" app-id="0" app-url="{:url('Main/index')}"
                             app-name="{:lang('HOME')}">
                             <a class="cmf-tabs-item-text">{:lang('HOME')}</a>
@@ -233,135 +218,220 @@
                     </ul>
                     <div style="clear:both;"></div>
                 </div>
-                <a id="task-next" class="task-changebt"><i class="fa fa-chevron-right"></i></a>
             </div>
-
-            <ul class="nav navbar-nav navbar-right simplewind-nav">
-                <li class="light-blue" style="border-left:none;display: none;" id="close-all-tabs-btn">
-                    <a id="close-wrapper" href="javascript:void(0);" title="{:lang('CLOSE_TOP_MENU')}"
-                       style="font-size: 16px">
-                        <i class="fa fa-times right_tool_icon"></i>
-                    </a>
-                </li>
-                <li class="light-blue" style="border-left:none;">
-                    <a id="refresh-wrapper" href="javacript:void(0);" title="{:lang('REFRESH_CURRENT_PAGE')}"
-                       style="font-size: 16px">
-                        <i class="fa fa-refresh right_tool_icon"></i>
-                    </a>
-                </li>
-                <if condition="cmf_admin_multi_lang()">
-                    <php>
-                        $admin_allow_lang_list=cmf_admin_allow_lang_list();
-                        $current_lang=cmf_current_admin_lang();
-                    </php>
-                    <li class="light-blue dropdown" style="border-left:none;">
-                        <a href="javacript:void(0);" title=""
-                           style="font-size: 16px"
-                           data-toggle="dropdown" class="dropdown-toggle">
-                            <i class="fa fa-language right_tool_icon"></i>
+            <div class="position-relative" style="padding-left: 30px;">
+                <a id="task-next" class="task-changebt"><i class="fa fa-chevron-right"></i></a>
+                <ul class="navbar-nav ms-auto nav simplewind-nav flex-nowrap">
+                    <li class="light-blue" style="border-left:none;display: none;" id="close-all-tabs-btn">
+                        <a id="close-wrapper" href="javascript:void(0);" title="{:lang('CLOSE_TOP_MENU')}"
+                           style="font-size: 16px">
+                            <i class="fa fa-times right_tool_icon"></i>
                         </a>
-                        <ul class="pull-right dropdown-menu dropdown-caret dropdown-closer">
-                            <foreach name="$admin_allow_lang_list" item="lang">
-                                <li>
-                                    <a href="{:url('admin/Index/index')}?lang={$lang}">{$lang}</a>
-                                </li>
-                            </foreach>
-                        </ul>
                     </li>
-                </if>
-                <li class="light-blue dropdown" style="border-left:none;">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <if condition="isset($admin['avatar']) && $admin['avatar']">
-                            <img class="nav-user-photo" width="30" height="30"
-                                 src="{:cmf_get_user_avatar_url($admin['avatar'])}" alt="{$admin.user_login}">
-                            <else/>
-                            <img class="nav-user-photo" width="30" height="30"
-                                 src="__TMPL__/public/assets/images/headicon_50.png"
-                                 alt="{$admin.user_login|default=''}">
-                        </if>
-                        <span class="user-info">
+                    <li class="light-blue" style="border-left:none;">
+                        <a id="refresh-wrapper" href="javacript:void(0);" title="{:lang('REFRESH_CURRENT_PAGE')}">
+                            <i class="fa fa-refresh right_tool_icon"></i>
+                        </a>
+                    </li>
+                    <if condition="cmf_admin_multi_lang()">
+                        <php>
+                            $admin_allow_lang_list=cmf_admin_allow_lang_list();
+                            $current_lang=cmf_current_admin_lang();
+                        </php>
+                        <li class="light-blue dropdown" style="border-left:none;">
+                            <a href="javascript:" title=""
+                               data-bs-toggle="dropdown" class="dropdown-toggle">
+                                <i class="fa fa-language right_tool_icon"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <foreach name="$admin_allow_lang_list" item="lang">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{:url('admin/Index/index')}?lang={$lang}">{$lang}</a>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </li>
+                    </if>
+                    <li class="light-blue dropdown" style="border-left:none;">
+                        <a data-bs-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <if condition="isset($admin['avatar']) && $admin['avatar']">
+                                <img class="nav-user-photo" width="30" height="30"
+                                     src="{:cmf_get_user_avatar_url($admin['avatar'])}" alt="{$admin.user_login}">
+                                <else/>
+                                <img class="nav-user-photo" width="30" height="30"
+                                     src="__TMPL__/public/assets/images/headicon_50.png"
+                                     alt="{$admin.user_login|default=''}">
+                            </if>
+                            <span class="user-info">
 								{:empty($admin['user_nickname'] ) ? $admin['user_login'] : $admin['user_nickname']}
 						</span>
-                        <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
-                        <li>
-                            <a href="javascript:openapp('{:url('User/userinfo')}','index_userinfo','{:lang('ADMIN_USER_USERINFO')}',true);"><i
-                                    class="fa fa-user fa-fw"></i> {:lang('ADMIN_USER_USERINFO')}</a></li>
-                        <li>
-                            <a href="javascript:openapp('{:url('User/emailSetting')}','index_email_setting','{:lang('ADMIN_USER_EMAILSETTING')}',true);"><i
-                                    class="fa fa-envelope fa-fw"></i> {:lang('ADMIN_USER_EMAILSETTING')}</a></li>
-                        <li>
-                            <a href="javascript:openapp('{:url('Setting/password')}','index_password','{:lang('ADMIN_SETTING_PASSWORD')}',true);"><i
-                                    class="fa fa-lock fa-fw"></i> {:lang('ADMIN_SETTING_PASSWORD')}</a></li>
-                        <li><a href="{:url('Public/logout')}"><i class="fa fa-sign-out fa-fw"></i> {:lang('LOGOUT')}</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                        </a>
+                        <ul class="user-menu dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item"
+                                   href="javascript:openapp('{:url('User/userinfo')}','index_userinfo','{:lang('ADMIN_USER_USERINFO')}',true);"><i
+                                        class="fa fa-user fa-fw"></i> {:lang('ADMIN_USER_USERINFO')}</a></li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="javascript:openapp('{:url('User/emailSetting')}','index_email_setting','{:lang('ADMIN_USER_EMAILSETTING')}',true);"><i
+                                        class="fa fa-envelope fa-fw"></i> {:lang('ADMIN_USER_EMAILSETTING')}</a></li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="javascript:openapp('{:url('Setting/password')}','index_password','{:lang('ADMIN_SETTING_PASSWORD')}',true);"><i
+                                        class="fa fa-lock fa-fw"></i> {:lang('ADMIN_SETTING_PASSWORD')}</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{:url('Public/logout')}"><i
+                                        class="fa fa-sign-out fa-fw"></i>
+                                    {:lang('LOGOUT')}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </div>
+</nav>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+            <empty name="$_admin_setting.admin_name">
+                <img src="__TMPL__/public/assets/images/logo.svg" class="navbar-brand-logo"
+                     style="height: 22px;display: inline-block;vertical-align: middle;border-radius: 4px;"/>
+                <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
+                    ThinkCMF
+                </span>
+                <else/>
+                <span style="display: inline-block;vertical-align: middle;" class="navbar-brand-name">
+                    {$_admin_setting.admin_name}
+                </span>
+            </empty>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div>
+            <div class="sidebar-shortcuts">
+                <a class="btn btn-sm btn-default" href="__ROOT__/"
+                   title="{:lang('WEBSITE_HOME_PAGE')}"
+                   target="_blank"
+                   data-toggle="tooltip">
+                    <i class="fa fa-home"></i>
+                </a>
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'user/AdminAsset/index')">
+                    <a class="btn btn-sm btn-info"
+                       href="javascript:openapp('{:url('user/AdminAsset/index')}','userAdminAssetindex','{:lang('USER_ADMINASSET_INDEX')}',true);"
+                       title="{:lang('USER_ADMINASSET_INDEX')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-file"></i>
+                    </a>
+                </if>
+
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/Setting/clearcache')">
+                    <a class="btn btn-sm btn-danger"
+                       href="javascript:openapp('{:url('admin/Setting/clearcache')}','index_clearcache','{:lang('ADMIN_SETTING_CLEARCACHE')}',true);"
+                       title="{:lang('ADMIN_SETTING_CLEARCACHE')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </if>
+
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/RecycleBin/index')">
+                    <a class="btn btn-sm btn-warning"
+                       href="javascript:openapp('{:url('admin/RecycleBin/index')}','index_recycle','{:lang('ADMIN_RECYCLEBIN_INDEX')}',true);"
+                       title="{:lang('ADMIN_RECYCLEBIN_INDEX')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-recycle"></i>
+                    </a>
+                </if>
+
+                <php>
+                    $dev_menu_display='none';
+                    if(APP_DEBUG){
+                    $dev_menu_display='inline-block';
+                    }
+                </php>
+                <a class="btn btn-sm btn-default"
+                   id="dev-menu-button"
+                   style="display: {$dev_menu_display};"
+                   href="javascript:openapp('{:url('admin/Dev/index')}','index_dev','{:lang('ADMIN_DEV_INDEX')}',true);"
+                   title="{:lang('ADMIN_DEV_INDEX')}"
+                   data-toggle="tooltip">
+                    <i class="fa fa-terminal"></i>
+                </a>
+
+            </div>
+            <div id="nav-wrapper">
+                <ul class="nav-list">
+                    {:getsubmenu($submenus)}
+                </ul>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
 <div class="main-container container-fluid">
-
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-            <a class="btn btn-sm btn-default" href="__ROOT__/"
-               title="{:lang('WEBSITE_HOME_PAGE')}"
-               target="_blank"
-               data-toggle="tooltip">
-                <i class="fa fa-home"></i>
-            </a>
-            <if condition="cmf_auth_check(cmf_get_current_admin_id(),'user/AdminAsset/index')">
-                <a class="btn btn-sm btn-info"
-                   href="javascript:openapp('{:url('user/AdminAsset/index')}','userAdminAssetindex','{:lang('USER_ADMINASSET_INDEX')}',true);"
-                   title="{:lang('USER_ADMINASSET_INDEX')}"
+    <empty name="$_is_mobile">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <a class="btn btn-sm btn-default" href="__ROOT__/"
+                   title="{:lang('WEBSITE_HOME_PAGE')}"
+                   target="_blank"
                    data-toggle="tooltip">
-                    <i class="fa fa-file"></i>
+                    <i class="fa fa-home"></i>
                 </a>
-            </if>
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'user/AdminAsset/index')">
+                    <a class="btn btn-sm btn-info"
+                       href="javascript:openapp('{:url('user/AdminAsset/index')}','userAdminAssetindex','{:lang('USER_ADMINASSET_INDEX')}',true);"
+                       title="{:lang('USER_ADMINASSET_INDEX')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-file"></i>
+                    </a>
+                </if>
 
-            <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/Setting/clearcache')">
-                <a class="btn btn-sm btn-danger"
-                   href="javascript:openapp('{:url('admin/Setting/clearcache')}','index_clearcache','{:lang('ADMIN_SETTING_CLEARCACHE')}',true);"
-                   title="{:lang('ADMIN_SETTING_CLEARCACHE')}"
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/Setting/clearcache')">
+                    <a class="btn btn-sm btn-danger"
+                       href="javascript:openapp('{:url('admin/Setting/clearcache')}','index_clearcache','{:lang('ADMIN_SETTING_CLEARCACHE')}',true);"
+                       title="{:lang('ADMIN_SETTING_CLEARCACHE')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </if>
+
+                <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/RecycleBin/index')">
+                    <a class="btn btn-sm btn-warning"
+                       href="javascript:openapp('{:url('admin/RecycleBin/index')}','index_recycle','{:lang('ADMIN_RECYCLEBIN_INDEX')}',true);"
+                       title="{:lang('ADMIN_RECYCLEBIN_INDEX')}"
+                       data-toggle="tooltip">
+                        <i class="fa fa-recycle"></i>
+                    </a>
+                </if>
+
+                <php>
+                    $dev_menu_display='none';
+                    if(APP_DEBUG){
+                    $dev_menu_display='inline-block';
+                    }
+                </php>
+                <a class="btn btn-sm btn-default"
+                   id="dev-menu-button"
+                   style="display: {$dev_menu_display};"
+                   href="javascript:openapp('{:url('admin/Dev/index')}','index_dev','{:lang('ADMIN_DEV_INDEX')}',true);"
+                   title="{:lang('ADMIN_DEV_INDEX')}"
                    data-toggle="tooltip">
-                    <i class="fa fa-trash-o"></i>
+                    <i class="fa fa-terminal"></i>
                 </a>
-            </if>
 
-            <if condition="cmf_auth_check(cmf_get_current_admin_id(),'admin/RecycleBin/index')">
-                <a class="btn btn-sm btn-warning"
-                   href="javascript:openapp('{:url('admin/RecycleBin/index')}','index_recycle','{:lang('ADMIN_RECYCLEBIN_INDEX')}',true);"
-                   title="{:lang('ADMIN_RECYCLEBIN_INDEX')}"
-                   data-toggle="tooltip">
-                    <i class="fa fa-recycle"></i>
-                </a>
-            </if>
-
-            <php>
-                $dev_menu_display='none';
-                if(APP_DEBUG){
-                $dev_menu_display='inline-block';
-                }
-            </php>
-            <a class="btn btn-sm btn-default"
-               id="dev-menu-button"
-               style="display: {$dev_menu_display};"
-               href="javascript:openapp('{:url('admin/Dev/index')}','index_dev','{:lang('ADMIN_DEV_INDEX')}',true);"
-               title="{:lang('ADMIN_DEV_INDEX')}"
-               data-toggle="tooltip">
-                <i class="fa fa-terminal"></i>
-            </a>
-
+            </div>
+            <div id="nav-wrapper">
+                <ul class="nav-list">
+                    {:getsubmenu($submenus)}
+                </ul>
+            </div>
         </div>
-        <div id="nav-wrapper">
-            <ul class="nav nav-list">
-                {:getsubmenu($submenus)}
-            </ul>
-        </div>
-    </div>
+    </empty>
 
     <div class="main-content">
         <div class="page-content" id="content">
@@ -370,10 +440,11 @@
         </div>
     </div>
 </div>
-
-<script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
+<script src="__TMPL__/public/assets/js/jquery-3.6.4.min.js"></script>
+<script src="__TMPL__/public/assets/js/jquery-migrate-3.4.0.min.js"></script>
+<script src="__TMPL__/public/assets/js/bootstrap5/popper.min.js"></script>
+<script src="__TMPL__/public/assets/js/bootstrap5/bootstrap.min.js"></script>
 <script src="__STATIC__/js/wind.js"></script>
-<script src="__TMPL__/public/assets/js/bootstrap.min.js"></script>
 <script src="__STATIC__/js/admin.js?v={$_static_version}"></script>
 <script src="__TMPL__/public/assets/simpleboot/js/adminindex.js?v={$_static_version}"></script>
 <script>
@@ -415,7 +486,7 @@
         if (!closest_a || closest_a.length == 0) {
             return
         }
-        if (!closest_a.hasClass("dropdown-toggle")) {
+        if (!closest_a.hasClass("cmf-dropdown-toggle")) {
             if (ismenumin && "click" == "tap" && closest_a.get(0).parentNode.parentNode == this) {
                 var closest_a_menu_text = closest_a.find(".menu-text").get(0);
                 if (event.target != closest_a_menu_text && !$.contains(closest_a_menu_text, event.target)) {
