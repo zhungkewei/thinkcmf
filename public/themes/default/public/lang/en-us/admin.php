@@ -11,5 +11,9 @@ return [
     '请输入副标题' => 'please input subtitle',
     '标题'         => 'Title',
     '图标'         => 'Icon',
-    '描述'         => 'Description'
+    '描述'         => 'Description',
+    '幻灯片'       => 'Slide',
+    '全屏显示'     => 'Fullscreen',
+    '公司名称'     => 'Company name',
+    '导航ID'       => 'Navigation ID'
 ];
