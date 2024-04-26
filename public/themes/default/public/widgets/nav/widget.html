@@ -59,16 +59,27 @@
                 <php>
                     $allow_lang_list=cmf_allow_lang_list();
                     $current_lang=cmf_current_home_lang();
+                    $lang_setting=cmf_get_option('lang_setting');
                 </php>
                 <div class="dropdown">
                     <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                        {$current_lang} <span class="caret"></span>
+                        <notempty name="$lang_setting['allow_lang_list']">
+                            <foreach name="$lang_setting['allow_lang_list']" item="lang">
+                                <eq name="current_lang" value="$lang.lang">
+                                    {$lang.name|default=$lang.lang}
+                                    <php>break;</php>
+                                </eq>
+                            </foreach>
+                        </notempty>
+                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-left">
-                        <foreach name="$allow_lang_list" item="lang">
-                            <li><a class="dropdown-item" href="{:cmf_lang_url($lang)}">{$lang}</a></li>
-                        </foreach>
+                        <notempty name="$lang_setting['allow_lang_list']">
+                            <foreach name="$lang_setting['allow_lang_list']" item="lang">
+                                <li><a class="dropdown-item" href="{:cmf_lang_url($lang.lang)}">{$lang.name|default=$lang.lang}</a></li>
+                            </foreach>
+                        </notempty>
                     </ul>
                 </div>
             </if>

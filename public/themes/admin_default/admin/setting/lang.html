@@ -132,15 +132,20 @@
                                                placeholder="{:lang('Lang')}" required>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <input type="text" class="form-control allow_lang_list-alias-input"
                                            name="allow_lang_list[{$key}][alias]" value="{$allow_lang.alias}"
                                            placeholder="{:lang('Lang Alias')}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <input type="text" class="form-control allow_lang_list-domain-input"
                                            name="allow_lang_list[{$key}][domain]" value="{$allow_lang.domain}"
                                            placeholder="{:lang('Lang Domain')}">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control allow_lang_list-domain-input"
+                                           name="allow_lang_list[{$key}][name]" value="{$allow_lang.name|default=''}"
+                                           placeholder="{:lang('Name')}">
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-secondary home-lang-delete-btn"><i class="fa fa-trash"></i></a>
@@ -199,6 +204,11 @@
                                                name="admin_allow_lang_list[{$key}][lang]" value="{$allow_lang.lang}"
                                                placeholder="{:lang('Lang')}" required>
                                     </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control allow_lang_list-domain-input"
+                                           name="admin_allow_lang_list[{$key}][name]" value="{$allow_lang.name|default=''}"
+                                           placeholder="{:lang('Name')}">
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-secondary admin-lang-delete-btn"><i class="fa fa-trash"></i></a>
