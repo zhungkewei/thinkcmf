@@ -237,17 +237,19 @@
                         <php>
                             $admin_allow_lang_list=cmf_admin_allow_lang_list();
                             $current_lang=cmf_current_admin_lang();
+                            $lang_setting=cmf_get_option('lang_setting');
                         </php>
+                        <notempty name="$lang_setting['admin_allow_lang_list']"></notempty>
                         <li class="light-blue dropdown" style="border-left:none;">
                             <a href="javascript:" title=""
                                data-bs-toggle="dropdown" class="dropdown-toggle">
                                 <i class="fa fa-language right_tool_icon"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <foreach name="$admin_allow_lang_list" item="lang">
+                                <foreach name="$lang_setting['admin_allow_lang_list']" item="lang">
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{:url('admin/Index/index')}?lang={$lang}">{$lang}</a>
+                                           href="{:url('admin/Index/index')}?lang={$lang.lang}">{$lang.name}</a>
                                     </li>
                                 </foreach>
                             </ul>
