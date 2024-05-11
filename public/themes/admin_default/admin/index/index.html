@@ -249,7 +249,7 @@
                                 <foreach name="$lang_setting['admin_allow_lang_list']" item="lang">
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{:url('admin/Index/index')}?lang={$lang.lang}">{$lang.name}</a>
+                                           href="{:url('admin/Index/index')}?lang={$lang.lang}">{$lang.name|default=$lang.lang}</a>
                                     </li>
                                 </foreach>
                             </ul>
