@@ -86,12 +86,23 @@
                         <foreach name="file['more']['widgets_blocks']" item="widgetsBlock" key="widgetsBlockName"
                                  index="index">
                             <div class="card margin-top-20">
-                                <div class="card-header">
-                                    <empty name="$widgetsBlock.title">
-                                        {:lang('Untitled')}
-                                        <else/>
-                                        {:lang($widgetsBlock.title)}
-                                    </empty>
+                                <div class="d-flex card-header justify-content-between align-items-center">
+                                    <div>
+                                        <empty name="$widgetsBlock.title">
+                                            {:lang('Untitled')}
+                                            <else/>
+                                            {:lang($widgetsBlock.title)}
+                                        </empty>
+                                    </div>
+                                   <div>
+                                       <a href="javascript:"
+                                          onclick="_openThemeFileWidgets(this)"
+                                          data-title="添加组件"
+                                          data-file_id="{$file.id}"
+                                          data-block_name="{$widgetsBlockName}"
+                                          data-theme="{$theme}"
+                                          class="btn btn-sm btn-light">+</a>
+                                   </div>
                                 </div>
                                 <ul class="list-group list-group-flush widgets-group"
                                     data-file_id="{$file.id}"
@@ -104,11 +115,14 @@
                                                 data-id="{$key}"
                                                 data-title="{:lang('SETTING')}">
                                                 {$widget.title|default=''}
-                                                <a class="float-end" onclick="doWidgetSetting(this)"
-                                                   href="javascript:;"><i class="fa fa-cog"></i></a>
+                                                <a class="float-end btn btn-sm btn-danger js-ajax-delete"
+                                                   data-href="admin/theme/file/block/widget?file={$file.id}&theme={$theme}&block_name={$widgetsBlockName}&widget_id={$key}"
+                                                   href="javascript:"><i class="fa fa-trash-o"></i></a>
+                                                <a class="float-end btn btn-sm btn-light me-1" onclick="doWidgetSetting(this)"
+                                                   href="javascript:"><i class="fa fa-cog"></i></a>
                                                 <empty name="widget.display">
-                                                    <div class="float-end">
-                                                        <i class="fa fa-eye-slash "></i>&nbsp;
+                                                    <div class="float-end btn btn-sm btn-light me-1">
+                                                        <i class="fa fa-eye-slash "></i>
                                                     </div>
                                                 </empty>
                                             </li>

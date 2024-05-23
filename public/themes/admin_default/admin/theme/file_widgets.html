@@ -1,0 +1,47 @@
+<extend name="public@base5"/>
+<block name="main">
+    <div class="wrap js-check-wrap">
+        <php>
+            $content_lang=cmf_current_home_lang();
+        </php>
+        <form method="post" class="js-ajax-form">
+            <table class="table table-hover table-bordered table-list">
+                <thead>
+                <tr>
+                    <th>组件</th>
+                    <th class="text-center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <php>$file=input('param.file');
+                $theme=input('param.theme');
+                $block_name=input('param.block_name');</php>
+                <foreach name="widgets" item="widget">
+                    <tr>
+                        <td>
+                            <div>{$widget.title}</div>
+                            <div>{$widget.keywords}</div>
+                            <div>{$widget.description}</div>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-xs btn-primary js-ajax-dialog-btn"
+                               href="javascript:"
+                               data-href="admin/theme/file/block/widget?file={$file}&theme={$theme}&block_name={$block_name}&widget={$widget.name}"
+                               title="加到页面" data-toggle="tooltip">
+                                <i class="fa fa-plus fa-fw"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </foreach>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</block>
+<block name="scripts">
+    <script>
+        function confirm() {
+            return true;
+        }
+    </script>
+</block>

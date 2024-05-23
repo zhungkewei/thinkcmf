@@ -278,4 +278,38 @@
 
     }
 
+    function _openThemeFileWidgets(obj) {
+        var $obj = $(obj);
+        // var $parent = $obj.parent();
+        // var $widgetsBlock = $obj.parents('.widgets-group');
+        // var widgetId = $parent.data('id');
+
+        var title = $obj.data('title');
+        var blockName = $obj.data('block_name');
+        var theme = $obj.data('theme');
+        var fileId = $obj.data('file_id');
+
+        parent.openIframeLayer(
+            "{:url('Theme/fileWidgets')}?file=" + fileId + "&theme=" + theme + '&block_name=' + blockName,
+            title,
+            {
+                area: GV.IS_MOBILE ? ['100%', '100%'] : ['600px', '100%'],
+                offset: GV.IS_MOBILE ? ['0px', '0px'] : 'auto',
+                btn: ["{:lang('SAVE')}", "{:lang('CANCEL')}"],
+                yes: function (index, layero) {
+                    var iframeWin = parent.window[layero.find('iframe')[0]['name']];
+                    var result = iframeWin.confirm();
+
+                    if (result) {
+                        parent.layer.close(index); //如果设定了yes回调，需进行手工关闭
+                    }
+
+                },
+                end: function () {
+                    parent.simulator.location.reload(true);
+                }
+            }
+        );
+    }
+
 </script>

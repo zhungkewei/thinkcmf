@@ -185,6 +185,7 @@ https://gitee.com/thinkcmf/docker
 - [x] 升级`FontAwesome`图标到`v6.4.2`
 - [x] 增加后台设置统一入口
 - [x] 增加`cmf_lang_url`函数
+- [x] 增加后台模板自由设计
 - [x] 优化API跨域处理
 - [x] 优化插件安装卸载更新提示
 - [x] 优化应用安装卸载更新提示

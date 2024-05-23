@@ -1392,4 +1392,60 @@ class ThemeController extends AdminBaseController
     }
 
 
+    /**
+     * 模板文件自由控件列表
+     * @adminMenu(
+     *     'name'   => '模板文件自由控件列表',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> true,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '模板文件自由控件列表',
+     *     'param'  => ''
+     * )
+     */
+    public function fileWidgets()
+    {
+        $file   = $this->request->param('file');
+        $fileId = 0;
+        if (!is_numeric($file)) {
+            $fileName = $file;
+            $theme    = $this->request->param('theme');
+            $file     = ThemeFileModel::where(['file' => $file, 'theme' => $theme])->find();
+        } else {
+            $fileId   = $file;
+            $file     = ThemeFileModel::where('id', $fileId)->find();
+            $fileName = $file['file'];
+        }
+
+
+        if (empty($file)) {
+            $this->error('未找到模板文件！');
+        } else {
+            $fileId  = $file['id'];
+            $theme   = $file['theme'];
+            $action  = $file['action'];
+            $dirs    = cmf_scan_dir(WEB_ROOT . "themes/$theme/public/widgets/*", GLOB_ONLYDIR);
+            $widgets = [];
+            foreach ($dirs as $widgetName) {
+                $widgetDir    = WEB_ROOT . "themes/$theme/public/widgets/$widgetName/";
+                $manifestFile = $widgetDir . 'manifest.json';
+                if (is_file($manifestFile)) {
+                    $widgetInfo = json_decode(file_get_contents($manifestFile), true);
+                    if (!empty($widgetInfo) && (empty($widgetInfo['action']) || $widgetInfo['action'] === $action)) {
+                        $widgets[] = $widgetInfo;
+                    }
+                }
+            }
+
+            $this->assign('widgets', $widgets);
+        }
+
+
+        return $this->fetch();
+
+    }
+
+
 }

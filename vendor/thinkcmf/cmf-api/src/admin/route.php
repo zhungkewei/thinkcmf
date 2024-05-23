@@ -86,6 +86,8 @@ Route::post('admin/theme/:theme/file/setting$', 'admin/Theme/fileSettingPost');
 Route::get('admin/theme/widget/setting$', 'admin/Theme/widgetSetting');
 Route::post('admin/theme/widget/setting$', 'admin/Theme/widgetSettingPost');
 Route::post('admin/theme/widgets/sort$', 'admin/Theme/widgetsSort');
+Route::post('admin/theme/file/block/widget$', 'admin/Theme/fileWidgetBlockWidgetPost');
+Route::delete('admin/theme/file/block/widget$', 'admin/Theme/fileWidgetBlockWidgetDelete');
 
 Route::post('admin/my/email/setting/test$', 'admin/My/emailSettingTest');
 Route::get('admin/my/email/setting$', 'admin/My/emailSetting');
