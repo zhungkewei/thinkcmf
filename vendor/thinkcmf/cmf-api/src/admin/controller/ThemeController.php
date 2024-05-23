@@ -1884,11 +1884,11 @@ class ThemeController extends RestAdminBaseController
 
         $fileId = 0;
         if (!is_numeric($file)) {
-            $theme    = $this->request->param('theme');
-            $file     = ThemeFileModel::where(['file' => $file, 'theme' => $theme])->find();
+            $theme = $this->request->param('theme');
+            $file  = ThemeFileModel::where(['file' => $file, 'theme' => $theme])->find();
         } else {
-            $fileId   = $file;
-            $file     = ThemeFileModel::where('id', $fileId)->find();
+            $fileId = $file;
+            $file   = ThemeFileModel::where('id', $fileId)->find();
         }
 
         if (empty($file)) {
@@ -1942,7 +1942,6 @@ class ThemeController extends RestAdminBaseController
      *         in="query",
      *         example="demo",
      *         description="模板名,如demo,simpleboot3",
-     *         required=true,
      *         @OA\Schema(
      *             type="string",
      *         )
@@ -1961,7 +1960,7 @@ class ThemeController extends RestAdminBaseController
      *          response="1",
      *          description="success",
      *          @OA\JsonContent(example={"code": 1,"msg": "success","data":{
-     *                  "file_name":"portal/index","files":{{"id":179,"is_public":1,"list_order":0,"theme":"demo","name":"模板全局配置","action":"public/Config","file":"public/config","description":"模板全局配置文件","more":{"vars":{"enable_mobile":{"title":"手机注册","value":1,"type":"select","options":{"0":"关闭","1":"开启"},"tip":""}}},"config_more":{"vars":{"enable_mobile":{"title":"手机注册","value":1,"type":"select","options":{"0":"关闭","1":"开启"},"tip":""}}},"draft_more":null}},"file":{"id":175,"is_public":0,"list_order":5,"theme":"demo","name":"首页","action":"portal/Index/index","file":"portal/index","description":"首页模板文件","more":{"widgets_blocks":{"main":{"title":"主块区","widgets":{"main_slider_202207090001":{"title":"幻灯片","name":"slider","display":"1","version":"1.0.0","action":"","vars":{"top_slide":""}}}}}},"config_more":{"widgets_blocks":{"main":{"title":"主块区","widgets":{"main_slider_202207090001":{"name":"slider"}}}}},"draft_more":null},"file_id":175,"has_public_var":true,"has_widget":false,"has_file":true
+     *                 "widgets":{{"id":179,"is_public":1,"list_order":0,"theme":"demo","name":"模板全局配置","action":"public/Config","file":"public/config","description":"模板全局配置文件"}}
      *             }})
      *     ),
      *     @OA\Response(
@@ -1984,17 +1983,30 @@ class ThemeController extends RestAdminBaseController
             $fileName = $file['file'];
         }
 
+
         if (empty($file)) {
             $this->error('未找到模板文件！');
         } else {
-            $fileId = $file['id'];
-        }
+            $fileId  = $file['id'];
+            $theme   = $file['theme'];
+            $action  = $file['action'];
+            $dirs    = cmf_scan_dir(WEB_ROOT . "themes/$theme/public/widgets/*", GLOB_ONLYDIR);
+            $widgets = [];
+            foreach ($dirs as $widgetName) {
+                $widgetDir    = WEB_ROOT . "themes/$theme/public/widgets/$widgetName/";
+                $manifestFile = $widgetDir . 'manifest.json';
+                if (is_file($manifestFile)) {
+                    $widgetInfo = json_decode(file_get_contents($manifestFile), true);
+                    if (!empty($widgetInfo) && (empty($widgetInfo['action']) || $widgetInfo['action'] === $action)) {
+                        $widgets[] = $widgetInfo;
+                    }
+                }
+            }
 
-        $this->success('success', [
-            'file_name' => $fileName,
-            'file'      => $file,
-            'file_id'   => $fileId,
-        ]);
+            $this->success('success', [
+                'widgets'   => $widgets
+            ]);
+        }
     }
 
 
