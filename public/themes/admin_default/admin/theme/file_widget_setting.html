@@ -98,6 +98,8 @@
                                        <a href="javascript:"
                                           onclick="_openThemeFileWidgets(this)"
                                           data-title="添加组件"
+                                          title="添加组件"
+                                          data-toggle="tooltip"
                                           data-file_id="{$file.id}"
                                           data-block_name="{$widgetsBlockName}"
                                           data-theme="{$theme}"
@@ -116,12 +118,18 @@
                                                 data-title="{:lang('SETTING')}">
                                                 {$widget.title|default=''}
                                                 <a class="float-end btn btn-sm btn-danger js-ajax-delete"
+                                                   title="删除组件"
+                                                   data-toggle="tooltip"
                                                    data-href="admin/theme/file/block/widget?file={$file.id}&theme={$theme}&block_name={$widgetsBlockName}&widget_id={$key}"
                                                    href="javascript:"><i class="fa fa-trash-o"></i></a>
                                                 <a class="float-end btn btn-sm btn-light me-1" onclick="doWidgetSetting(this)"
+                                                   title="设置组件"
+                                                   data-toggle="tooltip"
                                                    href="javascript:"><i class="fa fa-cog"></i></a>
                                                 <empty name="widget.display">
-                                                    <div class="float-end btn btn-sm btn-light me-1">
+                                                    <div class="float-end btn btn-sm btn-light me-1"
+                                                         title="隐藏"
+                                                         data-toggle="tooltip">
                                                         <i class="fa fa-eye-slash "></i>
                                                     </div>
                                                 </empty>
