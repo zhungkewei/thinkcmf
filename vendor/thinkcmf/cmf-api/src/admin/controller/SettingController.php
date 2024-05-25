@@ -328,6 +328,57 @@ class SettingController extends RestAdminBaseController
         $this->success(lang('EDIT_SUCCESS'));
     }
 
+        /**
+     * 多语言设置
+     * @throws \think\exception\DbException
+     * @OA\Get(
+     *     tags={"admin"},
+     *     path="/admin/setting/lang",
+     *     summary="多语言设置",
+     *     description="多语言设置",
+     *     @OA\Response(
+     *          response="1",
+     *          @OA\JsonContent(example={"code": 1,"msg": "success","data":{
+     *                  "lang_setting":{}
+     *              }
+     *          })
+     *     ),
+     *     @OA\Response(
+     *          response="0",
+     *          @OA\JsonContent(example={"code": 0,"msg": "error!","data": ""})
+     *     ),
+     * )
+     */
+    public function lang()
+    {
+        $langSetting = cmf_get_option('lang_setting');
+        if (empty($langSetting)) {
+            $app              = app();
+            $langConfig       = $app->lang->getConfig();
+            $defaultLang      = $app->lang->defaultLangSet();
+            $adminDefaultLang = empty($langConfig['admin_default_lang']) ? 'zh-cn' : $langConfig['admin_default_lang'];
+            $langSetting      = [
+                'multi_lang_mode'       => 1,
+                'home_multi_lang'       => 0,
+                'default_lang'          => $defaultLang,
+                'allow_lang_list'       => [[
+                    'lang'   => $defaultLang,
+                    'alias'  => '',
+                    'domain' => '',
+                ]],
+                'admin_multi_lang'      => 0,
+                'admin_default_lang'    => $adminDefaultLang,
+                'admin_allow_lang_list' => [[
+                    'lang'   => $adminDefaultLang,
+                ]]
+            ];
+
+
+        }
+        $this->success('success', ['lang_setting' => $langSetting]);
+    }
+
+
     /**
      * 多语言设置提交保存
      * @throws \think\exception\DbException
