@@ -105,7 +105,7 @@ class ThemeModel extends Model
 
         foreach ($tplFiles as $tplFile) {
             $configFile = $tplFile . ".json";
-            $file       = preg_replace('/^themes\/' . $theme . '\//', '', $tplFile);
+            $file       = str_replace($themeDir , $theme, $tplFile);
             $file       = strtolower($file);
             $config     = json_decode(file_get_contents($configFile), true);
             $findFile   = ThemeFileModel::where(['theme' => $theme, 'file' => $file])->find();
