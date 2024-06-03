@@ -10,6 +10,7 @@ namespace api\admin\controller;
 
 use app\admin\model\RouteModel;
 use app\admin\model\UserModel;
+use app\admin\service\SettingService;
 use cmf\controller\RestAdminBaseController;
 use OpenApi\Annotations as OA;
 
@@ -327,6 +328,34 @@ class SettingController extends RestAdminBaseController
         cmf_set_option('upload_setting', $uploadSetting);
         $this->success(lang('EDIT_SUCCESS'));
     }
+
+        /**
+     * 多语言设置
+     * @throws \think\exception\DbException
+     * @OA\Get(
+     *     tags={"admin"},
+     *     path="/admin/setting/lang",
+     *     summary="多语言设置",
+     *     description="多语言设置",
+     *     @OA\Response(
+     *          response="1",
+     *          @OA\JsonContent(example={"code": 1,"msg": "success","data":{
+     *                  "lang_setting":{}
+     *              }
+     *          })
+     *     ),
+     *     @OA\Response(
+     *          response="0",
+     *          @OA\JsonContent(example={"code": 0,"msg": "error!","data": ""})
+     *     ),
+     * )
+     */
+    public function lang()
+    {
+        $langSetting = app(SettingService::class)->getLangSetting();
+        $this->success('success', ['lang_setting' => $langSetting]);
+    }
+
 
     /**
      * 多语言设置提交保存

@@ -12,6 +12,7 @@ namespace app\admin\controller;
 
 use app\admin\model\RouteModel;
 use app\admin\model\UserModel;
+use app\admin\service\SettingService;
 use cmf\controller\AdminBaseController;
 
 /**
@@ -358,30 +359,7 @@ class SettingController extends AdminBaseController
      */
     public function lang()
     {
-        $langSetting = cmf_get_option('lang_setting');
-        if (empty($langSetting)) {
-            $app              = app();
-            $langConfig       = $app->lang->getConfig();
-            $defaultLang      = $app->lang->defaultLangSet();
-            $adminDefaultLang = empty($langConfig['admin_default_lang']) ? 'zh-cn' : $langConfig['admin_default_lang'];
-            $langSetting      = [
-                'multi_lang_mode'       => 1,
-                'home_multi_lang'       => 0,
-                'default_lang'          => $defaultLang,
-                'allow_lang_list'       => [[
-                    'lang'   => $defaultLang,
-                    'alias'  => '',
-                    'domain' => '',
-                ]],
-                'admin_multi_lang'      => 0,
-                'admin_default_lang'    => $adminDefaultLang,
-                'admin_allow_lang_list' => [[
-                    'lang'   => $adminDefaultLang,
-                ]]
-            ];
-
-
-        }
+        $langSetting = app(SettingService::class)->getLangSetting();
 
         $this->assign('lang_setting', $langSetting);
         return $this->fetch();
