@@ -1189,7 +1189,7 @@ function cmf_scan_dir($pattern, $flags = 0)
  */
 function cmf_sub_dirs($dir)
 {
-    $dir     = ltrim($dir, "/");
+    $dir     = rtrim($dir, "/");
     $dirs    = [];
     $subDirs = cmf_scan_dir("$dir/*", GLOB_ONLYDIR);
     if (!empty($subDirs)) {

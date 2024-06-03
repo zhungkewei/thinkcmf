@@ -78,7 +78,7 @@ class ThemeModel extends Model
 
     private function updateThemeFiles($theme, $suffix = 'html')
     {
-        $dir                = WEB_ROOT . 'themes/' . $theme;
+        $dir                = 'themes/' . $theme;
         $themeDir           = $dir;
         $tplFiles           = [];
         $root_dir_tpl_files = cmf_scan_dir("$dir/*.$suffix");
@@ -102,6 +102,7 @@ class ThemeModel extends Model
                 }
             }
         }
+
 
         foreach ($tplFiles as $tplFile) {
             $configFile = $tplFile . ".json";
