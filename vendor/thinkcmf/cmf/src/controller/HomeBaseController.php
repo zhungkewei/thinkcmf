@@ -191,7 +191,7 @@ hello;
         $webRoot   = str_replace('\\', '/', WEB_ROOT);
         $themeFile = str_replace(['.html', '.php', $themePath . $theme . '/', $webRoot], '', $file);
 
-        $files = Db::name('theme_file')->field('more,file,id')->where('theme', $theme)
+        $files = Db::name('theme_file')->field('more,file,id,is_public')->where('theme', $theme)
             ->where(function ($query) use ($themeFile) {
                 $query->where('is_public', 1)->whereOr('file', $themeFile);
             })->order('is_public desc')->select();
@@ -247,8 +247,8 @@ hello;
                 }
             }
 
-            if ($themeFile == $file['file'] && !empty($oldMore['widgets_blocks'])) {
-
+            if (!empty($oldMore['widgets_blocks'])) {
+//               print_r($file);
                 if (!empty($oldMore['widgets_blocks'])) {
                     foreach ($oldMore['widgets_blocks'] as $widgetsBlockName => $widgetsBlock) {
                         $widgetsBlock['_file_id'] = $file['id'];

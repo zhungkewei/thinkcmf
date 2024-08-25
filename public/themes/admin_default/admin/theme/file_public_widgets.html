@@ -10,10 +10,10 @@
         <div class="position-relative">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{:url('admin/Theme/fileWidgets')}?file={$file}&theme={$theme}&block_name={$block_name}">组件</a>
+                    <a class="nav-link" href="{:url('admin/Theme/fileWidgets')}?file={$file}&theme={$theme}&block_name={$block_name}">组件</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{:url('admin/Theme/filePublicWidgets')}?file={$file}&theme={$theme}&block_name={$block_name}">全局组件</a>
+                    <a class="nav-link active" href="{:url('admin/Theme/filePublicWidgets')}?file={$file}&theme={$theme}&block_name={$block_name}">全局组件</a>
                 </li>
             </ul>
         </div>
@@ -26,17 +26,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <foreach name="widgets" item="widget">
+                <foreach name="widgets" item="widget" key="public_widget_id">
                     <tr>
                         <td>
                             <div>{$widget.title}</div>
-                            <div>{$widget.keywords}</div>
-                            <div>{$widget.description}</div>
                         </td>
                         <td class="text-center">
                             <a class="btn btn-xs btn-primary js-ajax-dialog-btn"
                                href="javascript:"
-                               data-href="admin/theme/file/block/widget?file={$file}&theme={$theme}&block_name={$block_name}&widget={$widget.name}"
+                               data-href="admin/theme/file/block/widget?file={$file}&theme={$theme}&block_name={$block_name}&public_widget_id={$public_widget_id}"
                                title="加到页面" data-toggle="tooltip">
                                 <i class="fa fa-plus fa-fw"></i>
                             </a>

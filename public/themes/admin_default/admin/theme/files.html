@@ -43,7 +43,7 @@
             var fileId = $obj.data('file');
             var title = $obj.data('title');
             parent.openIframeLayer("{:url('Theme/fileSetting')}?file_id=" + fileId, title, {
-                area: GV.IS_MOBILE ? ['100%', '100%'] : ['700px', '90%'],
+                area: GV.IS_MOBILE ? ['100%', '100%'] : ['600px', '100%'],
                 offset: GV.IS_MOBILE ? ['0px', '0px'] : 'auto',
                 btn: ["{:lang('OK')}", "{:lang('CANCEL')}"],
                 yes: function (index, layero) {

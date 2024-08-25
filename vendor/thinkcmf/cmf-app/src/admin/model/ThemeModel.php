@@ -106,7 +106,7 @@ class ThemeModel extends Model
 
         foreach ($tplFiles as $tplFile) {
             $configFile = $tplFile . ".json";
-            $file       = str_replace($themeDir.'/' , '', $tplFile);
+            $file       = str_replace($themeDir . '/', '', $tplFile);
             $file       = strtolower($file);
             $config     = json_decode(file_get_contents($configFile), true);
             $findFile   = ThemeFileModel::where(['theme' => $theme, 'file' => $file])->find();
@@ -174,13 +174,21 @@ class ThemeModel extends Model
                                 if (is_file($manifestFile)) {
                                     $widgetInfo = json_decode(file_get_contents($manifestFile), true);
                                     if (!empty($widgetInfo)) {
-                                        $widget = [
-                                            'title'   => $widgetInfo['title'],
-                                            'name'    => $widgetInfo['name'],
-                                            'display' => $widgetInfo['display'],
-                                            'version' => $widgetInfo['version'],
-                                            'action'  => $widgetInfo['action'],
-                                        ];
+                                        if (!isset($widget['title'])) {
+                                            $widget['title'] = $widgetInfo['title'];
+                                        }
+
+                                        if (!isset($widget['display'])) {
+                                            $widget['display'] = $widgetInfo['display'];
+                                        }
+
+                                        if (!isset($widget['version'])) {
+                                            $widget['version'] = $widgetInfo['version'];
+                                        }
+
+                                        if (!isset($widget['action'])) {
+                                            $widget['action'] = $widgetInfo['action'];
+                                        }
 
                                         $mWidgetVars = [];
                                         if (!empty($widgetInfo['vars'])) {

@@ -1255,8 +1255,28 @@ class ThemeController extends AdminBaseController
 
         $widgetWithValue = $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId];
         $theme           = $file['theme'];
-        $widgetManifest  = file_get_contents(WEB_ROOT . "themes/$theme/public/widgets/{$widgetWithValue['name']}/manifest.json");
-        $widget          = json_decode($widgetManifest, true);
+
+        if (!empty($widgetWithValue['public_widget_id'])) {
+            $publicWidgetId = $widgetWithValue['public_widget_id'];
+            $publicFile     = ThemeFileModel::where(['file' => 'public/config', 'theme' => $theme])->find();
+            $publicFileMore = $publicFile['more'];
+            if (!empty($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId])) {
+                if (!empty($contentLang) && $contentLang != $this->app->lang->defaultLangSet()) {
+                    $findThemeFileI18n = ThemeFileI18nModel::where('file_id', $publicFile['id'])->where('lang', $contentLang)->find();
+                    if (!empty($findThemeFileI18n)) {
+                        $publicFileMore = $findThemeFileI18n['more'];
+                        if (!empty($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId])) {
+                            $widgetWithValue = $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId];
+                        }
+                    }
+                } else {
+                    $widgetWithValue = $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId];
+                }
+            }
+        }
+
+        $widgetManifest = file_get_contents(WEB_ROOT . "themes/$theme/public/widgets/{$widgetWithValue['name']}/manifest.json");
+        $widget         = json_decode($widgetManifest, true);
 
         $defaultCss = [
             "margin-top"    => [
@@ -1435,6 +1455,61 @@ class ThemeController extends AdminBaseController
                     $widgetInfo = json_decode(file_get_contents($manifestFile), true);
                     if (!empty($widgetInfo) && (empty($widgetInfo['action']) || $widgetInfo['action'] === $action)) {
                         $widgets[] = $widgetInfo;
+                    }
+                }
+            }
+
+            $this->assign('widgets', $widgets);
+        }
+
+
+        return $this->fetch();
+
+    }
+
+    /**
+     * 模板文件全局自由控件列表
+     * @adminMenu(
+     *     'name'   => '模板文件全局自由控件列表',
+     *     'parent' => 'index',
+     *     'display'=> false,
+     *     'hasView'=> true,
+     *     'order'  => 10000,
+     *     'icon'   => '',
+     *     'remark' => '模板文件全局自由控件列表',
+     *     'param'  => ''
+     * )
+     */
+    public function filePublicWidgets()
+    {
+        $file   = $this->request->param('file');
+        $fileId = 0;
+        if (!is_numeric($file)) {
+            $fileName = $file;
+            $theme    = $this->request->param('theme');
+            $file     = ThemeFileModel::where(['file' => $file, 'theme' => $theme])->find();
+        } else {
+            $fileId   = $file;
+            $file     = ThemeFileModel::where('id', $fileId)->find();
+            $fileName = $file['file'];
+        }
+
+
+        if (empty($file)) {
+            $this->error('未找到模板文件！');
+        } else {
+            $fileId     = $file['id'];
+            $theme      = $file['theme'];
+            $publicFile = ThemeFileModel::where(['file' => 'public/config', 'theme' => $theme])->find();
+            $widgets    = [];
+            if (!empty($publicFile)) {
+                $more = $publicFile['more'];
+                if (!empty($more['widgets_blocks']['public'])) {
+                    $widgetBlock = $more['widgets_blocks']['public'];
+                    if (!empty($widgetBlock['widgets'])) {
+                        foreach ($widgetBlock['widgets'] as $widgetId => $widget) {
+                            $widgets[$widgetId] = $widget;
+                        }
                     }
                 }
             }

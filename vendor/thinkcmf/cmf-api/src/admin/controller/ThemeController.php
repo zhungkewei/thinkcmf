@@ -806,8 +806,7 @@ class ThemeController extends RestAdminBaseController
             }
         }
 
-        $oldWidget = $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId];
-
+        $oldWidget      = $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId];
         $theme          = $file['theme'];
         $widgetManifest = file_get_contents(WEB_ROOT . "themes/$theme/public/widgets/{$oldWidget['name']}/manifest.json");
         $widgetInFile   = json_decode($widgetManifest, true);
@@ -839,8 +838,40 @@ class ThemeController extends RestAdminBaseController
 
         $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId] = $oldWidget;
 
-        $more = json_encode($oldMore);
+        if (!empty($oldWidget['public_widget_id'])) {
+            $publicWidgetId = $oldWidget['public_widget_id'];
+            $publicFile     = ThemeFileModel::where(['file' => 'public/config', 'theme' => $theme])->find();
+            $publicFileMore = $publicFile['more'];
+            if (!empty($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId])) {
+                if (!empty($contentLang) && $contentLang != $this->app->lang->defaultLangSet()) {
+                    $findThemeFileI18n = ThemeFileI18nModel::where('file_id', $publicFile['id'])->where('lang', $contentLang)->find();
+                    if (!empty($findThemeFileI18n)) {
+                        $publicFileMore = $findThemeFileI18n['more'];
 
+                        $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId] = $oldWidget;
+                        unset($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId]['public_widget_id']);
+                        $findThemeFileI18n->save(['more' => $publicFileMore]);
+                    } else {
+                        $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId] = $oldWidget;
+                        unset($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId]['public_widget_id']);
+                        ThemeFileI18nModel::create([
+                            'file_id' => $publicFile['id'],
+                            'theme'   => $publicFile['theme'],
+                            'lang'    => $contentLang,
+                            'action'  => $publicFile['action'],
+                            'file'    => $publicFile['file'],
+                            'more'    => $publicFileMore
+                        ]);
+                    }
+                } else {
+                    $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId] = $oldWidget;
+                    unset($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId]['public_widget_id']);
+                    $publicFile->save(['more' => $publicFileMore]);
+                }
+            }
+        }
+
+        $more = json_encode($oldMore);
         if (!empty($contentLang) && $contentLang != $this->app->lang->defaultLangSet()) {
             $findThemeFileI18n = ThemeFileI18nModel::where('file_id', $fileId)->where('lang', $contentLang)->find();
             $findThemeFileI18n->save(['more' => $oldMore]);
@@ -1729,10 +1760,11 @@ class ThemeController extends RestAdminBaseController
      */
     public function fileWidgetBlockWidgetPost()
     {
-        $file        = $this->request->param('file');
-        $widgetName  = $this->request->param('widget');
-        $blockName   = $this->request->param('block_name');
-        $contentLang = $this->request->param('admin_content_lang', cmf_current_home_lang());
+        $file           = $this->request->param('file');
+        $widgetName     = $this->request->param('widget');
+        $publicWidgetId = $this->request->param('public_widget_id');
+        $blockName      = $this->request->param('block_name');
+        $contentLang    = $this->request->param('admin_content_lang', cmf_current_home_lang());
 
         $fileId = 0;
         $theme  = '';
@@ -1771,40 +1803,60 @@ class ThemeController extends RestAdminBaseController
         }
 
 
-        $theme                  = $file['theme'];
-        $widgetManifestFilePath = WEB_ROOT . "themes/$theme/public/widgets/{$widgetName}/manifest.json";
-        if (!file_exists($widgetManifestFilePath)) {
-            $this->error('组件不存在！');
-        }
-
-        $widgetManifest = file_get_contents($widgetManifestFilePath);
-        $widgetInfo     = json_decode($widgetManifest, true);
-        if (empty($widgetInfo)) {
-            $this->error('组件描述文件解析失败！');
-        }
-
-        $widget = [
-            'title'   => $widgetInfo['title'],
-            'name'    => $widgetInfo['name'],
-            'display' => $widgetInfo['display'],
-            'version' => $widgetInfo['version'],
-            'action'  => $widgetInfo['action'],
-        ];
-
-        $mWidgetVars = [];
-        if (!empty($widgetInfo['vars'])) {
-            foreach ($widgetInfo['vars'] as $widgetVarName => $widgetVar) {
-                $mWidgetVars[$widgetVarName] = $widgetVar['value'];
+        $theme = $file['theme'];
+        if (!empty($widgetName)) {
+            $widgetManifestFilePath = WEB_ROOT . "themes/$theme/public/widgets/{$widgetName}/manifest.json";
+            if (!file_exists($widgetManifestFilePath)) {
+                $this->error('组件不存在！');
             }
+
+            $widgetManifest = file_get_contents($widgetManifestFilePath);
+            $widgetInfo     = json_decode($widgetManifest, true);
+            if (empty($widgetInfo)) {
+                $this->error('组件描述文件解析失败！');
+            }
+
+            $widget = [
+                'title'   => $widgetInfo['title'],
+                'name'    => $widgetInfo['name'],
+                'display' => $widgetInfo['display'],
+                'version' => $widgetInfo['version'],
+                'action'  => $widgetInfo['action'],
+            ];
+
+            $mWidgetVars = [];
+            if (!empty($widgetInfo['vars'])) {
+                foreach ($widgetInfo['vars'] as $widgetVarName => $widgetVar) {
+                    $mWidgetVars[$widgetVarName] = $widgetVar['value'];
+                }
+            }
+
+            $widget['vars'] = $mWidgetVars;
+            $widgetId       = uniqid($blockName . $widgetInfo['name']);
+
+            $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId] = $widget;
+        } elseif (!empty($publicWidgetId)) {
+            $publicFile = ThemeFileModel::where(['file' => 'public/config', 'theme' => $theme])->find();
+            if (empty($publicFile)) {
+                $this->error('未找到全局配置文件！');
+            }
+            $publicFileMore = $publicFile['more'];
+            if (!empty($contentLang) && $contentLang != $this->app->lang->defaultLangSet()) {
+//                $findThemeFileI18n = ThemeFileI18nModel::where('file_id', $fileId)->where('lang', $contentLang)->find();
+//                $findThemeFileI18n->save(['more' => $oldMore]);
+            }
+
+            if (empty($publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId])) {
+                $this->error('未找到全局组件！');
+            }
+
+            $widget                                                      = $publicFileMore['widgets_blocks']['public']['widgets'][$publicWidgetId];
+            $widgetId                                                    = uniqid($blockName . $widget['name']);
+            $widget['public_widget_id']                                  = $publicWidgetId;
+            $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId] = $widget;
         }
-
-        $widget['vars'] = $mWidgetVars;
-        $widgetId       = uniqid($blockName . $widgetInfo['name']);
-
-        $oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId] = $widget;
 
         $more = json_encode($oldMore);
-
         if (!empty($contentLang) && $contentLang != $this->app->lang->defaultLangSet()) {
             $findThemeFileI18n = ThemeFileI18nModel::where('file_id', $fileId)->where('lang', $contentLang)->find();
             $findThemeFileI18n->save(['more' => $oldMore]);
@@ -2004,7 +2056,7 @@ class ThemeController extends RestAdminBaseController
             }
 
             $this->success('success', [
-                'widgets'   => $widgets
+                'widgets' => $widgets
             ]);
         }
     }

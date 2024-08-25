@@ -81,68 +81,73 @@
                     </div>
                 </div>
 
-                <foreach name="files" item="file">
-                    <notempty name="file['more']['widgets_blocks']">
-                        <foreach name="file['more']['widgets_blocks']" item="widgetsBlock" key="widgetsBlockName"
-                                 index="index">
-                            <div class="card margin-top-20">
-                                <div class="d-flex card-header justify-content-between align-items-center">
-                                    <div>
-                                        <empty name="$widgetsBlock.title">
-                                            {:lang('Untitled')}
-                                            <else/>
-                                            {:lang($widgetsBlock.title)}
-                                        </empty>
-                                    </div>
-                                   <div>
-                                       <a href="javascript:"
-                                          onclick="_openThemeFileWidgets(this)"
-                                          data-title="添加组件"
-                                          title="添加组件"
-                                          data-toggle="tooltip"
-                                          data-file_id="{$file.id}"
-                                          data-block_name="{$widgetsBlockName}"
-                                          data-theme="{$theme}"
-                                          class="btn btn-sm btn-light">+</a>
-                                   </div>
-                                </div>
-                                <ul class="list-group list-group-flush widgets-group"
-                                    data-file_id="{$file.id}"
-                                    data-block_name="{$widgetsBlockName}"
-                                    data-admin_content_lang="{:cmf_current_home_lang()}">
-                                    <notempty name="widgetsBlock.widgets">
-                                        <foreach name="widgetsBlock.widgets" item="widget">
-                                            <li class="list-group-item list-group-item-action widgets-group-item"
-                                                data-file_id="{$file.id}"
-                                                data-id="{$key}"
-                                                data-title="{:lang('SETTING')}">
-                                                {$widget.title|default=''}
-                                                <a class="float-end btn btn-sm btn-danger js-ajax-delete"
-                                                   title="删除组件"
-                                                   data-toggle="tooltip"
-                                                   data-href="admin/theme/file/block/widget?file={$file.id}&theme={$theme}&block_name={$widgetsBlockName}&widget_id={$key}"
-                                                   href="javascript:"><i class="fa fa-trash-o"></i></a>
-                                                <a class="float-end btn btn-sm btn-light me-1" onclick="doWidgetSetting(this)"
-                                                   title="设置组件"
-                                                   data-toggle="tooltip"
-                                                   href="javascript:"><i class="fa fa-cog"></i></a>
-                                                <empty name="widget.display">
-                                                    <div class="float-end btn btn-sm btn-light me-1"
-                                                         title="隐藏"
-                                                         data-toggle="tooltip">
-                                                        <i class="fa fa-eye-slash "></i>
-                                                    </div>
-                                                </empty>
-                                            </li>
-                                        </foreach>
+                <notempty name="file['more']['widgets_blocks']">
+                    <foreach name="file['more']['widgets_blocks']" item="widgetsBlock" key="widgetsBlockName"
+                             index="index">
+                        <div class="card margin-top-20">
+                            <div class="d-flex card-header justify-content-between align-items-center">
+                                <div>
+                                    <empty name="$widgetsBlock.title">
+                                        {:lang('Untitled')}
                                         <else/>
-                                        <!--                                    <li class="list-group-item">什么都没有~</li>-->
-                                    </notempty>
-                                </ul>
+                                        {:lang($widgetsBlock.title)}
+                                    </empty>
+                                </div>
+                                <div>
+                                    <a href="javascript:"
+                                       onclick="_openThemeFileWidgets(this)"
+                                       data-title="添加组件"
+                                       title="添加组件"
+                                       data-toggle="tooltip"
+                                       data-file_id="{$file.id}"
+                                       data-block_name="{$widgetsBlockName}"
+                                       data-theme="{$theme}"
+                                       class="btn btn-sm btn-light">+</a>
+                                </div>
                             </div>
-                        </foreach>
-                    </notempty>
-                </foreach>
+                            <ul class="list-group list-group-flush widgets-group"
+                                data-file_id="{$file.id}"
+                                data-block_name="{$widgetsBlockName}"
+                                data-admin_content_lang="{:cmf_current_home_lang()}">
+                                <notempty name="widgetsBlock.widgets">
+                                    <foreach name="widgetsBlock.widgets" item="widget">
+                                        <li class="list-group-item list-group-item-action widgets-group-item"
+                                            data-file_id="{$file.id}"
+                                            data-id="{$key}"
+                                            data-title="{:lang('SETTING')}">
+                                            {$widget.title|default=''}
+                                            <a class="float-end btn btn-sm btn-danger js-ajax-delete"
+                                               title="删除组件"
+                                               data-toggle="tooltip"
+                                               data-href="admin/theme/file/block/widget?file={$file.id}&theme={$theme}&block_name={$widgetsBlockName}&widget_id={$key}"
+                                               href="javascript:"><i class="fa fa-trash-o"></i></a>
+                                            <a class="float-end btn btn-sm btn-light me-1"
+                                               onclick="doWidgetSetting(this)"
+                                               title="设置组件"
+                                               data-toggle="tooltip"
+                                               href="javascript:"><i class="fa fa-cog"></i></a>
+                                            <empty name="widget.display">
+                                                <div class="float-end btn btn-sm btn-light me-1"
+                                                     title="隐藏"
+                                                     data-toggle="tooltip">
+                                                    <i class="fa fa-eye-slash "></i>
+                                                </div>
+                                            </empty>
+                                            <notempty name="widget.public_widget_id">
+                                                <a class="float-end btn btn-sm btn-success me-1"
+                                                   title="全局组件"
+                                                   data-toggle="tooltip"
+                                                   href="javascript:"><i class="fa fa-dot-circle-o fa-fw"></i></a>
+                                            </notempty>
+                                        </li>
+                                    </foreach>
+                                    <else/>
+                                    <!--                                    <li class="list-group-item">什么都没有~</li>-->
+                                </notempty>
+                            </ul>
+                        </div>
+                    </foreach>
+                </notempty>
 
                 <notempty name="has_widget">
                     <foreach name="files" item="file">

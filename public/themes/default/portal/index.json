@@ -11,7 +11,8 @@
                     "top_nav_202206300003": {
                         "title": "顶部导航",
                         "name": "nav",
-                        "display": "1"
+                        "display": "1",
+                        "public_widget_id": "top_nav"
                     }
                  }
             },
@@ -47,7 +48,8 @@
                     "home_footer_202206300003": {
                         "title": "底部",
                         "name": "footer",
-                        "display": "1"
+                        "display": "1",
+                        "public_widget_id": "footer"
                     }
                 }
             }
