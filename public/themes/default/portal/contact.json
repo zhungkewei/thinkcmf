@@ -21,7 +21,7 @@
                 "widgets": {
                     "contact_map_202206300003": {
                         "title": "联系地图",
-                        "name": "map_contact",
+                        "name": "tianditu_contact",
                         "display": "1"
                     },
                     "contact_guestbook_202206300003": {
