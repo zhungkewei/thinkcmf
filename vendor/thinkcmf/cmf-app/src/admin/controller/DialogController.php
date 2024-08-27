@@ -22,6 +22,12 @@ class DialogController extends AdminBaseController
 
     public function map()
     {
+        $content = hook_one('admin_dialog_map_view');
+
+        if (!empty($content)) {
+            return $content;
+        }
+
         $location = $this->request->param('location');
         $location = explode(',', $location);
         $lng      = empty($location[0]) ? 116.424966 : $location[0];
