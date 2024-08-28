@@ -1966,6 +1966,7 @@ class ThemeController extends RestAdminBaseController
             }
         }
 
+        $oldMore['edited_by_designer'] = 1;
         unset($oldMore['widgets_blocks'][$blockName]['widgets'][$widgetId]);
         $more = json_encode($oldMore);
 
