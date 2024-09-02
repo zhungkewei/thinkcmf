@@ -54,11 +54,11 @@ class LoginController extends HomeBaseController
                 'password' => 'require|min:6|max:32',
             ]);
             $validate->message([
-                'username.require' => '用户名不能为空',
-                'password.require' => '密码不能为空',
+                'username.require' => lang('USERNAME_OR_EMAIL_EMPTY'),
+                'password.require' => lang('PASSWORD_REQUIRED'),
                 'password.max'     => '密码不能超过32个字符',
                 'password.min'     => '密码不能小于6个字符',
-                'captcha.require'  => '验证码不能为空',
+                'captcha.require'  => lang('CAPTCHA_REQUIRED'),
             ]);
 
             $data = $this->request->post();
@@ -146,7 +146,7 @@ class LoginController extends HomeBaseController
                     $this->error($result);
                 }
             } else {
-                if(empty($data['captcha'])){
+                if (empty($data['captcha'])) {
                     $this->error('验证码不能为空!');
                 }
                 $captchaId = empty($data['_captcha_id']) ? '' : $data['_captcha_id'];

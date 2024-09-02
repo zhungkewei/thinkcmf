@@ -9,7 +9,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think;
 
@@ -43,6 +43,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     use model\concern\RelationShip;
     use model\concern\ModelEvent;
     use model\concern\TimeStamp;
+    use model\concern\AutoWriteId;
     use model\concern\Conversion;
 
     /**
@@ -116,18 +117,32 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     protected static $initialized = [];
 
     /**
-     * 软删除字段默认值
-     *
-     * @var mixed
-     */
-    protected $defaultSoftDelete;
-
-    /**
      * 全局查询范围.
      *
      * @var array
      */
     protected $globalScope = [];
+
+    /**
+     * 数据字段值的变化.
+     *
+     * @var array
+     */
+    protected $change = [];
+
+    /**
+     * 数据表延迟写入的字段
+     *
+     * @var array
+     */
+    protected $lazyFields = [];
+
+    /**
+     * 软删除字段默认值
+     *
+     * @var mixed
+     */
+    protected $defaultSoftDelete;
 
     /**
      * Db对象
@@ -182,6 +197,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         if (!isset(static::$macro[static::class])) {
             static::$macro[static::class] = [];
         }
+
         static::$macro[static::class][$method] = $closure;
     }
 
@@ -233,7 +249,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      *
      * @param array|object $data 数据
      */
-    public function __construct(array|object $data = [])
+    public function __construct(array | object $data = [])
     {
         // 设置数据
         $this->data($data);
@@ -243,7 +259,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         if (empty($this->name)) {
             // 当前模型名
-            $name = str_replace('\\', '/', static::class);
+            $name       = str_replace('\\', '/', static::class);
             $this->name = basename($name);
         }
 
@@ -386,17 +402,24 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     {
         /** @var Query $query */
         $query = self::$db->connect($this->connection)
-            ->name($this->name . $this->suffix)
+            ->name($this->name)
             ->pk($this->pk);
 
+        if (!empty($this->autoInc)) {
+            $query->autoinc(is_string($this->autoInc) ? $this->autoInc : $this->pk);
+        }
+
         if (!empty($this->table)) {
-            $query->table($this->table . $this->suffix);
+            $query->table($this->table);
+        } elseif (!empty($this->suffix)) {
+            $query->suffix($this->suffix);
         }
 
         $query->model($this)
             ->json($this->json, $this->jsonAssoc)
             ->setFieldType(array_merge($this->schema, $this->jsonType))
             ->setKey($this->getKey())
+            ->readonly($this->readonly)
             ->lazyFields($this->lazyFields);
 
         // 软删除
@@ -492,9 +515,9 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     public function refresh(bool $relation = false)
     {
         if ($this->exists) {
-            $this->data     = $this->db()->find($this->getKey())->getData();
-            $this->origin   = $this->data;
-            $this->get      = [];
+            $this->data   = $this->db()->find($this->getKey())->getData();
+            $this->origin = $this->data;
+            $this->get    = [];
 
             if ($relation) {
                 $this->relation = [];
@@ -539,6 +562,36 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     }
 
     /**
+     * 字段值增长
+     *
+     * @param string $field 字段名
+     * @param float  $step  增长值
+     *
+     * @return $this
+     */
+    public function inc(string $field, float $step = 1)
+    {
+        $this->setAttr($field, ['INC', $step]);
+        $this->change[$field] = $this->origin[$field] + $step;
+        return $this;
+    }
+
+    /**
+     * 字段值减少.
+     *
+     * @param string $field 字段名
+     * @param float  $step  增长值
+     *
+     * @return $this
+     */
+    public function dec(string $field, float $step = 1)
+    {
+        $this->setAttr($field, ['DEC', $step]);
+        $this->change[$field] = $this->origin[$field] - $step;
+        return $this;
+    }
+
+    /**
      * 保存当前数据对象
      *
      * @param array|object  $data     数据
@@ -546,7 +599,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      *
      * @return bool
      */
-    public function save(array|object $data = [], string $sequence = null): bool
+    public function save(array | object $data = [], string $sequence = null): bool
     {
         if ($data instanceof Model) {
             $data = $data->getData();
@@ -570,9 +623,17 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         // 写入回调
         $this->trigger('AfterWrite');
 
+        if (!empty($this->change)) {
+            // 处理递增递减数据
+            foreach ($this->change as $field => $val) {
+                $this->data[$field] = $val;
+            }
+            $this->change = [];
+        }
+
         // 重新记录原始数据
-        $this->origin   = $this->data;
-        $this->get      = [];
+        $this->origin = $this->data;
+        $this->get    = [];
 
         return true;
     }
@@ -640,14 +701,14 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         if ($this->autoWriteTimestamp && $this->updateTime) {
             // 自动写入更新时间
-            $data[$this->updateTime] = $this->autoWriteTimestamp();
+            $data[$this->updateTime]       = $this->autoWriteTimestamp();
             $this->data[$this->updateTime] = $data[$this->updateTime];
         }
 
         // 检查允许字段
         $allowFields = $this->checkAllowFields();
 
-        foreach ($this->relationWrite as $name => $val) {
+        foreach ($this->relationWrite as $val) {
             if (!is_array($val)) {
                 continue;
             }
@@ -660,12 +721,12 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         // 模型更新
-        $db = $this->db();
+        $db = $this->db(null);
 
         $db->transaction(function () use ($data, $allowFields, $db) {
-            $this->key  = null;
-            $where      = $this->getWhere();
-            $result     = $db->where($where)
+            $this->key = null;
+            $where     = $this->getWhere();
+            $result    = $db->where($where)
                 ->strict(false)
                 ->cache(true)
                 ->setOption('key', $this->key)
@@ -700,25 +761,29 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         $this->checkData();
-        $data = $this->data;
 
-        // 时间戳自动写入
-        if ($this->autoWriteTimestamp) {
-            if ($this->createTime && !array_key_exists($this->createTime, $data)) {
-                $data[$this->createTime]       = $this->autoWriteTimestamp();
-                $this->data[$this->createTime] = $data[$this->createTime];
+        // 主键自动写入
+        if ($this->isAutoWriteId()) {
+            $pk = $this->getPk();
+            if (is_string($pk) && !isset($this->data[$pk])) {
+                $this->data[$pk] = $this->autoWriteId();
             }
+        }
 
-            if ($this->updateTime && !array_key_exists($this->updateTime, $data)) {
-                $data[$this->updateTime] = $this->autoWriteTimestamp();
-                $this->data[$this->updateTime] = $data[$this->updateTime];
+        // 时间字段自动写入
+        if ($this->autoWriteTimestamp) {
+            foreach ([$this->createTime, $this->updateTime] as $field) {
+                if ($field && !array_key_exists($field, $this->data)) {
+                    $this->data[$field] = $this->autoWriteTimestamp();
+                }
             }
         }
 
         // 检查允许字段
         $allowFields = $this->checkAllowFields();
 
-        $db = $this->db();
+        $db   = $this->db();
+        $data = $this->data;
 
         $db->transaction(function () use ($data, $sequence, $allowFields, $db) {
             $result = $db->strict(false)
@@ -728,7 +793,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
                 ->insert($data, true);
 
             // 获取自动增长主键
-            if ($result) {
+            if ($result && !$this->isAutoWriteId()) {
                 $pk = $this->getPk();
 
                 if (is_string($pk) && (!isset($this->data[$pk]) || '' == $this->data[$pk])) {
@@ -763,7 +828,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         $pk = $this->getPk();
 
         if (is_string($pk) && isset($this->origin[$pk])) {
-            $where = [[$pk, '=', $this->origin[$pk]]];
+            $where     = [[$pk, '=', $this->origin[$pk]]];
             $this->key = $this->origin[$pk];
         } elseif (is_array($pk)) {
             foreach ($pk as $field) {
@@ -835,8 +900,8 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         // 读取更新条件
-        $where  = $this->getWhere();
-        $db     = $this->db();
+        $where = $this->getWhere();
+        $db    = $this->db();
 
         $db->transaction(function () use ($where, $db) {
             // 删除当前模型数据
@@ -850,7 +915,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
         $this->trigger('AfterDelete');
 
-        $this->exists   = false;
+        $this->exists = false;
 
         return true;
     }

@@ -582,7 +582,7 @@ function cmf_get_option($key)
     $optionValue = cache('cmf_options_' . $key);
 
     if (empty($optionValue)) {
-        $optionValue = OptionModel::where('option_name', $key)->value('option_value');
+        $optionValue = Db::name('option')->where('option_name', $key)->value('option_value');
         if (!empty($optionValue)) {
             $optionValue = json_decode($optionValue, true);
 
