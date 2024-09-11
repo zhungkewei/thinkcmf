@@ -410,7 +410,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
         }
 
         if (!empty($this->table)) {
-            $query->table($this->table);
+            $query->table($this->table . $this->suffix);
         } elseif (!empty($this->suffix)) {
             $query->suffix($this->suffix);
         }
@@ -775,6 +775,20 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             foreach ([$this->createTime, $this->updateTime] as $field) {
                 if ($field && !array_key_exists($field, $this->data)) {
                     $this->data[$field] = $this->autoWriteTimestamp();
+                }
+            }
+        }
+
+        // 自动（使用修改器）写入字段
+        if (!empty($this->insert)) {
+            foreach ($this->insert as $name => $val) {
+                $field = is_string($name) ? $name : $val;
+                if (!isset($this->data[$field])) {
+                    if (is_string($name)) {
+                        $this->data[$name] = $val;
+                    } else {
+                        $this->setAttr($field, null);
+                    }
                 }
             }
         }

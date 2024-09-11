@@ -972,16 +972,16 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v3.0.25",
+            "version": "v3.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
-                "reference": "fa37d041dab1fcdceeeaf7026d55436fcd2192a4"
+                "reference": "9c691f6bedc8a47103767a9a682810308c30c010"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-orm/zipball/fa37d041dab1fcdceeeaf7026d55436fcd2192a4",
-                "reference": "fa37d041dab1fcdceeeaf7026d55436fcd2192a4",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/9c691f6bedc8a47103767a9a682810308c30c010",
+                "reference": "9c691f6bedc8a47103767a9a682810308c30c010",
                 "shasum": ""
             },
             "require": {
@@ -1024,9 +1024,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-orm/issues",
-                "source": "https://github.com/top-think/think-orm/tree/v3.0.25"
+                "source": "https://github.com/top-think/think-orm/tree/v3.0.27"
             },
-            "time": "2024-08-29T09:20:18+00:00"
+            "time": "2024-09-11T01:29:29+00:00"
         },
         {
             "name": "xia/migration",
