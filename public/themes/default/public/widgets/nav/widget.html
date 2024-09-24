@@ -77,7 +77,11 @@
                     <ul class="dropdown-menu dropdown-menu-left">
                         <notempty name="$lang_setting['allow_lang_list']">
                             <foreach name="$lang_setting['allow_lang_list']" item="lang">
-                                <li><a class="dropdown-item" href="{:cmf_lang_url($lang.lang)}">{$lang.name|default=$lang.lang}</a></li>
+                                <if condition="in_array($lang.lang,$allow_lang_list)">
+                                    <li>
+                                        <a class="dropdown-item" href="{:cmf_lang_url($lang.lang)}">{$lang.name|default=$lang.lang}</a>
+                                    </li>
+                                </if>
                             </foreach>
                         </notempty>
                     </ul>
