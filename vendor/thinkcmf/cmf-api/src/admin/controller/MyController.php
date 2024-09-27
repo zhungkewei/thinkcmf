@@ -43,7 +43,7 @@ class MyController extends RestAdminBaseController
      */
     public function info()
     {
-        $id = $this->getUserId();
+        $id   = $this->getUserId();
         $user = UserModel::where("id", $id)->find();
 
         $roles   = RoleModel::where('status', 1)->order("id DESC")->select();
@@ -84,9 +84,9 @@ class MyController extends RestAdminBaseController
      */
     public function infoPut()
     {
-        $data = $this->request->param();
+        $data             = $this->request->param();
         $data['birthday'] = strtotime($data['birthday']);
-        $userId = $this->getUserId();
+        $userId           = $this->getUserId();
         /**
          * @var UserModel $user
          */
@@ -127,7 +127,7 @@ class MyController extends RestAdminBaseController
      */
     public function emailSetting()
     {
-        $adminId = $this->getUserId();
+        $adminId      = $this->getUserId();
         $emailSetting = cmf_get_option('admin_smtp_setting_' . $adminId);
 
         $this->success('success', ['setting' => $emailSetting]);
@@ -215,13 +215,13 @@ class MyController extends RestAdminBaseController
 
             $validate = new Validate();
             $validate->rule([
-                'to' => 'require|email',
+                'to'      => 'require|email',
                 'subject' => 'require',
                 'content' => 'require',
             ]);
             $validate->message([
-                'to.require' => '收件箱不能为空！',
-                'to.email' => '收件箱格式不正确！',
+                'to.require'      => '收件箱不能为空！',
+                'to.email'        => '收件箱格式不正确！',
                 'subject.require' => '标题不能为空！',
                 'content.require' => '内容不能为空！',
             ]);
@@ -231,7 +231,7 @@ class MyController extends RestAdminBaseController
                 $this->error($validate->getError());
             }
             $adminId = $this->getUserId();
-            $result = EmailService::send($data['to'], $data['subject'], $data['content'], [], $adminId);
+            $result  = EmailService::send($data['to'], $data['subject'], $data['content'], [], $adminId);
             if ($result && empty($result['error'])) {
                 $this->success('发送成功！');
             } else {
