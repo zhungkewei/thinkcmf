@@ -401,16 +401,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e"
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/79dff0b268932c640297f5208d6298f71855c03e",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
                 "shasum": ""
             },
             "require": {
@@ -445,9 +445,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.1"
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2024-08-21T13:31:24+00:00"
+            "time": "2024-09-11T13:17:53+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -502,16 +502,16 @@
         },
         {
             "name": "thinkcmf/cmf",
-            "version": "v8.0.2",
+            "version": "v8.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thinkcmf/cmf-core.git",
-                "reference": "e009cf91837c5b98b25aa14883d92158a8f071b6"
+                "reference": "81489195003cbd0e9767662680dd4232c10fc26a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thinkcmf/cmf-core/zipball/e009cf91837c5b98b25aa14883d92158a8f071b6",
-                "reference": "e009cf91837c5b98b25aa14883d92158a8f071b6",
+                "url": "https://api.github.com/repos/thinkcmf/cmf-core/zipball/81489195003cbd0e9767662680dd4232c10fc26a",
+                "reference": "81489195003cbd0e9767662680dd4232c10fc26a",
                 "shasum": ""
             },
             "require": {
@@ -558,22 +558,22 @@
             "description": "The ThinkCMF Core Package",
             "support": {
                 "issues": "https://github.com/thinkcmf/cmf-core/issues",
-                "source": "https://github.com/thinkcmf/cmf-core/tree/v8.0.2"
+                "source": "https://github.com/thinkcmf/cmf-core/tree/v8.0.3"
             },
-            "time": "2023-09-16T13:09:39+00:00"
+            "time": "2024-09-26T23:25:31+00:00"
         },
         {
             "name": "thinkcmf/cmf-api",
-            "version": "v8.0.5",
+            "version": "v8.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thinkcmf/cmf-api.git",
-                "reference": "baf0dd394db114ab39b382ea32f8a34875291767"
+                "reference": "00d4acf2a064f8a95270797d7836d08ea3e7b540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thinkcmf/cmf-api/zipball/baf0dd394db114ab39b382ea32f8a34875291767",
-                "reference": "baf0dd394db114ab39b382ea32f8a34875291767",
+                "url": "https://api.github.com/repos/thinkcmf/cmf-api/zipball/00d4acf2a064f8a95270797d7836d08ea3e7b540",
+                "reference": "00d4acf2a064f8a95270797d7836d08ea3e7b540",
                 "shasum": ""
             },
             "require": {
@@ -603,22 +603,22 @@
             "description": "The ThinkCMF Core Api Package",
             "support": {
                 "issues": "https://github.com/thinkcmf/cmf-api/issues",
-                "source": "https://github.com/thinkcmf/cmf-api/tree/v8.0.5"
+                "source": "https://github.com/thinkcmf/cmf-api/tree/v8.0.6"
             },
-            "time": "2023-09-27T15:36:58+00:00"
+            "time": "2024-09-27T09:26:20+00:00"
         },
         {
             "name": "thinkcmf/cmf-app",
-            "version": "v8.0.1",
+            "version": "v8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thinkcmf/cmf-app.git",
-                "reference": "9cbeb77af0575ee7218ecda10f3de4cd25acc9a3"
+                "reference": "188393a0f424d6bbbaa033d5a1067e32b467de1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thinkcmf/cmf-app/zipball/9cbeb77af0575ee7218ecda10f3de4cd25acc9a3",
-                "reference": "9cbeb77af0575ee7218ecda10f3de4cd25acc9a3",
+                "url": "https://api.github.com/repos/thinkcmf/cmf-app/zipball/188393a0f424d6bbbaa033d5a1067e32b467de1c",
+                "reference": "188393a0f424d6bbbaa033d5a1067e32b467de1c",
                 "shasum": ""
             },
             "require": {
@@ -644,9 +644,9 @@
             "description": "The ThinkCMF App Package",
             "support": {
                 "issues": "https://github.com/thinkcmf/cmf-app/issues",
-                "source": "https://github.com/thinkcmf/cmf-app/tree/v8.0.1"
+                "source": "https://github.com/thinkcmf/cmf-app/tree/v8.0.2"
             },
-            "time": "2023-09-17T12:58:27+00:00"
+            "time": "2024-09-29T02:14:54+00:00"
         },
         {
             "name": "thinkcmf/cmf-appstore",
@@ -777,16 +777,16 @@
         },
         {
             "name": "thinkcmf/cmf-install",
-            "version": "v8.0.1",
+            "version": "v8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thinkcmf/cmf-install.git",
-                "reference": "f7d76f7f4cf7104891e5920c84fc4b005673e4b4"
+                "reference": "f1b8040f19979a8adc01b40f82758ca7d7df7142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thinkcmf/cmf-install/zipball/f7d76f7f4cf7104891e5920c84fc4b005673e4b4",
-                "reference": "f7d76f7f4cf7104891e5920c84fc4b005673e4b4",
+                "url": "https://api.github.com/repos/thinkcmf/cmf-install/zipball/f1b8040f19979a8adc01b40f82758ca7d7df7142",
+                "reference": "f1b8040f19979a8adc01b40f82758ca7d7df7142",
                 "shasum": ""
             },
             "type": "library",
@@ -809,9 +809,9 @@
             "description": "The ThinkCMF Install Package",
             "support": {
                 "issues": "https://github.com/thinkcmf/cmf-install/issues",
-                "source": "https://github.com/thinkcmf/cmf-install/tree/v8.0.1"
+                "source": "https://github.com/thinkcmf/cmf-install/tree/v8.0.2"
             },
-            "time": "2023-09-17T00:13:17+00:00"
+            "time": "2024-09-26T23:22:51+00:00"
         },
         {
             "name": "thinkcmf/cmf-root",
