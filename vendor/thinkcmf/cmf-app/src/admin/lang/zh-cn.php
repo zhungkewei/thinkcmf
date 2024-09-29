@@ -186,7 +186,7 @@ return [
     'Please enter the name of the app'                => '请输入应用的名称{:app_name}',
     'Website founder password'                        => '网站创始人后台登录密码',
     "Please enter the website founder password"       => '请输入网站创始人后台登录密码',
-    'UNINSTALL_APP_LAST_DANGER_MSG'                   => '确认卸载应用{$app_name},并知晓严重性！',
+    'UNINSTALL_APP_LAST_DANGER_MSG'                   => '确认卸载应用{:app_name},并知晓严重性！',
     'Uninstall app'                                   => '卸载应用',
     'Open the dev panel, please execute'              => '打开开发者面板,请执行:',
     'File name'                                       => '文件名称',
