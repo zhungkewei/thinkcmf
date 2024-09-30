@@ -161,9 +161,9 @@
             'dev_requirement' => false,
         ),
         'thinkcmf/cmf-root' => array(
-            'pretty_version' => 'v2.0.1',
-            'version' => '2.0.1.0',
-            'reference' => '7a995dcfa62f275f3f72b85960524c8a1a70a35c',
+            'pretty_version' => 'v2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'c4b6a024ce39ff88a6ec564852eff6d0ccbcb147',
             'type' => 'composer-plugin',
             'install_path' => __DIR__ . '/../thinkcmf/cmf-root',
             'aliases' => array(),
