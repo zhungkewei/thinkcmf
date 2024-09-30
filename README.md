@@ -117,6 +117,10 @@ https://gitee.com/thinkcmf/docker
 
 ### 升级指导
 
+#### 8.0.0升级到8.0.1
+
+1. `composer update`
+
 #### 6.0.9升级到8.0.0
 
 1. 更改根目录`composer.json`的`require`下列包版本
