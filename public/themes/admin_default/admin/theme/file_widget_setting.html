@@ -201,12 +201,16 @@
 
         <include file="theme/scripts"/>
         <script>
-            parent.showDesignBtn();
+            if (parent.showDesignBtn) {
+                parent.showDesignBtn();
+            }
         </script>
     </notempty>
     <empty name="has_file">
         <script>
-            parent.hideDesignBtn();
+            if (parent.hideDesignBtn) {
+                parent.hideDesignBtn();
+            }
         </script>
     </empty>
 </block>

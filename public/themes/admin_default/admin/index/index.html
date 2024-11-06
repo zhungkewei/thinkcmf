@@ -60,7 +60,21 @@
             ROOT: "__ROOT__/",
             WEB_ROOT: "__WEB_ROOT__/",
             JS_ROOT: "static/js/",
-            IS_MOBILE: {$_is_mobile? 'true' : 'false'}
+            API_ROOT: {api: '__WEB_ROOT__/api/'},
+            IS_MOBILE: {$_is_mobile? 'true' : 'false'},
+            lang: function (langKey, params) {
+                var lang = {
+                    LOGIN_INVALID_TIPS: "{:lang('LOGIN_INVALID_TIPS')}",
+                    'Please select at least one': "{:lang('Please select at least one')}",
+                    Close: "{:lang('CLOSE')}",
+                    'You sure you want to delete it?': "{:lang('You sure you want to delete it?')}",
+                    'OK': "{:lang('OK')}",
+                    'Are you sure you want to do this?':"{:lang('Are you sure you want to do this?')}"
+                };
+
+                return typeof lang[langKey] === 'undefined' ? langKey : lang[langKey];
+
+            }
         };
     </script>
     <php>$submenus=$menus;</php>
