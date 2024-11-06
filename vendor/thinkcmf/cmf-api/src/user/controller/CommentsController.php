@@ -62,7 +62,7 @@ class CommentsController extends RestBaseController
         $commentService = new CommentService();
         $data           = $commentService->userComments($param);
         if (!$data->isEmpty()) {
-            $data->load('user,toUser');
+            $data->load(['user', 'toUser']);
         }
         if (empty($this->apiVersion) || $this->apiVersion == '1.0.0') {
             $response = [$data];
