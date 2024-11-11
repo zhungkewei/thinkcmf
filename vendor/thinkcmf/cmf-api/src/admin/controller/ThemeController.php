@@ -255,6 +255,7 @@ class ThemeController extends RestAdminBaseController
             $themeModel->transaction(function () use ($theme, $themeModel) {
                 $themeModel->where('theme', $theme)->delete();
                 ThemeFileModel::where('theme', $theme)->delete();
+                ThemeFileI18nModel::where('theme', $theme)->delete();
             });
 
             $this->success(lang('Uninstall successful'));
