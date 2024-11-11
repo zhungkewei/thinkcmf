@@ -149,12 +149,12 @@ class LangDetect
             $langSet = $this->lang->getLangSet();
         }
 
-        if (!empty($langSet)) {
-//            $oldHelder                              = $request->header();
-//            $oldHelder[$this->config['header_var']] = $langSet;
-//            $request->withHeader($oldHelder);
-            $this->saveToCookie($this->app->cookie, $langSet);
-        }
+//        if (!empty($langSet)) {
+////            $oldHelder                              = $request->header();
+////            $oldHelder[$this->config['header_var']] = $langSet;
+////            $request->withHeader($oldHelder);
+//            $this->saveToCookie($this->app->cookie, $langSet);
+//        }
 
         return $langSet;
     }

@@ -10,6 +10,8 @@
 // +---------------------------------------------------------------------
 namespace cmf\listener;
 
+use think\Cookie;
+
 class HomeLangListener
 {
     private $app;
@@ -20,6 +22,7 @@ class HomeLangListener
         /**--start LangListener--------------------------------------*/
         $this->app = app();
         $langSet   = $this->app->lang->getLangSet();
+        $this->saveToCookie($this->app->cookie, $langSet);
         session('current_home_lang', $langSet);
 
         $homeLangLoadResults = hook('home_lang_load', ['lang' => $langSet]);
@@ -79,6 +82,21 @@ class HomeLangListener
                     WEB_ROOT . "plugins/$plugin/lang/$langSet/home.php",
                 ]);
             }
+        }
+    }
+
+    /**
+     * 保存当前语言到Cookie
+     * @access protected
+     * @param Cookie $cookie  Cookie对象
+     * @param string $langSet 语言
+     * @return void
+     */
+    protected function saveToCookie(Cookie $cookie, string $langSet): void
+    {
+        $langConfig = $this->app->lang->getConfig();
+        if ($langConfig['use_cookie']) {
+            $cookie->set($langConfig['cookie_var'], $langSet);
         }
     }
 }
