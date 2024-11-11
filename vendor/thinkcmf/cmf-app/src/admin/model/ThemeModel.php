@@ -144,6 +144,20 @@ class ThemeModel extends Model
                     'is_public'   => $isPublic,
                     'list_order'  => $listOrder
                 ]);
+
+                $findFileI18nList = ThemeFileI18nModel::where(['theme' => $theme, 'file' => $file])->select();
+                foreach ($findFileI18nList as $findFileI18n) {
+                    $moreInDb = $findFileI18n['more'];
+                    $more     = $this->updateThemeConfigMore($configMore, $moreInDb);
+                    $more     = $this->loadWidgetDefaultValue($more, $themeDir);
+
+                    ThemeFileI18nModel::where('id', $findFileI18n['id'])->update([
+                        'theme'  => $theme,
+                        'action' => $config['action'],
+                        'file'   => $file,
+                        'more'   => json_encode($more),
+                    ]);
+                }
             }
         }
 
