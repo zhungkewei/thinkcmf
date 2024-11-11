@@ -58,10 +58,10 @@ class RegisterController extends HomeBaseController
             $validate = new \think\Validate();
             $validate->rule($rules);
             $validate->message([
-                'code.require'     => '验证码不能为空',
-                'password.require' => '密码不能为空',
-                'password.max'     => '密码不能超过32个字符',
-                'password.min'     => '密码不能小于6个字符'
+                'code.require'     => lang('数字验证码不能为空！'),
+                'password.require' => lang('密码不能为空！'),
+                'password.max'     => lang('密码不能超过32个字符！'),
+                'password.min'     => lang('密码不能小于6个字符！')
             ]);
 
             $data = $this->request->post();
@@ -78,13 +78,13 @@ class RegisterController extends HomeBaseController
                         $this->error($result);
                     }
                 } else {
-                    if(empty($data['captcha'])){
-                        $this->error('验证码不能为空!');
+                    if (empty($data['captcha'])) {
+                        $this->error(lang('验证码不能为空！'));
                     }
                     $captchaId = empty($data['_captcha_id']) ? '' : $data['_captcha_id'];
 
                     if (!cmf_captcha_check($data['captcha'], $captchaId)) {
-                        $this->error('验证码错误');
+                        $this->error(lang('验证码错误！'));
                     }
                 }
 
@@ -110,16 +110,16 @@ class RegisterController extends HomeBaseController
             $redirect                = empty($sessionLoginHttpReferer) ? cmf_get_root() . '/' : $sessionLoginHttpReferer;
             switch ($log) {
                 case 0:
-                    $this->success('注册成功', $redirect);
+                    $this->success(lang('注册成功！'), $redirect);
                     break;
                 case 1:
-                    $this->error("您的账户已注册过");
+                    $this->error(lang('您的账号已注册过！'));
                     break;
                 case 2:
-                    $this->error("您输入的账号格式错误");
+                    $this->error(lang('账号格式错误！'));
                     break;
                 default :
-                    $this->error('未受理的请求');
+                    $this->error(lang('未受理的请求！'));
             }
 
         } else {

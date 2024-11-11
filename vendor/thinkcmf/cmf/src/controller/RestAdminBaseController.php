@@ -29,7 +29,7 @@ class RestAdminBaseController extends RestBaseController
         $requestMethod = $this->request->method();
         $ruleName      = "admin_api:$requestMethod|{$this->getRoutePath()}";
         if (!cmf_auth_check($this->getUserId(), $ruleName)) {
-            $this->error(['code' => 0, 'msg' => '无权限！']);
+            $this->error(['code' => 0, 'msg' => lang('no access')]);
         }
     }
 

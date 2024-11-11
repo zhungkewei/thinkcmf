@@ -69,7 +69,7 @@ class PublicController extends AdminBaseController
         }
         //验证码
         if (!cmf_captcha_check($captcha)) {
-            $this->error(lang('CAPTCHA_NOT_RIGHT'));
+            $this->error(lang('验证码错误！'));
         }
 
         $name = $this->request->param("username");
@@ -78,7 +78,7 @@ class PublicController extends AdminBaseController
         }
         $pass = $this->request->param("password");
         if (empty($pass)) {
-            $this->error(lang('PASSWORD_REQUIRED'));
+            $this->error(lang('密码不能为空！'));
         }
         if (strpos($name, "@") > 0) {//邮箱登陆
             $where['user_email'] = $name;
@@ -116,7 +116,7 @@ class PublicController extends AdminBaseController
                     'user_nickname' => $result['user_nickname'],
                 ]]);
             } else {
-                $this->error(lang('PASSWORD_NOT_RIGHT'));
+                $this->error(lang('密码错误！'));
             }
         } else {
             $this->error(lang('USERNAME_NOT_EXIST'));

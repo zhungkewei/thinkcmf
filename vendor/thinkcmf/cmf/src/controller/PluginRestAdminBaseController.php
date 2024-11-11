@@ -16,9 +16,9 @@ class PluginRestAdminBaseController extends PluginRestBaseController
     {
         hook('admin_init');
         if (empty($this->user)) {
-            $this->error(['code' => 10001, 'msg' => '登录已失效!']);
+            $this->error(['code' => 10001, 'msg' => lang('登录已失效！')]);
         } elseif ($this->userType != 1) {
-            $this->error(['code' => 10001, 'msg' => '登录已失效!']);
+            $this->error(['code' => 10001, 'msg' => lang('登录已失效！')]);
         }
 
         $this->checkAccess();
@@ -29,7 +29,7 @@ class PluginRestAdminBaseController extends PluginRestBaseController
         $requestMethod = $this->request->method();
         $ruleName      = "admin_api:$requestMethod|{$this->getRoutePath()}";
         if (!cmf_auth_check($this->getUserId(), $ruleName)) {
-            $this->error(['code' => 0, 'msg' => '无权限！']);
+            $this->error(['code' => 0, 'msg' => lang('no access')]);
         }
     }
 

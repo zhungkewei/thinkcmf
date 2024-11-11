@@ -26,8 +26,8 @@ class VerificationCodeController extends HomeBaseController
 //            'captcha'  => 'require',
         ]);
         $validate->message([
-            'username.require' => '请输入手机号或邮箱!',
-            'captcha.require'  => '图片验证码不能为空',
+            'username.require' => lang('请输入手机号或邮箱！'),
+            'captcha.require'  => lang('验证码不能为空！'),
         ]);
 
         $data = $this->request->param();
@@ -43,11 +43,11 @@ class VerificationCodeController extends HomeBaseController
             }
         } else {
             if (empty($data['captcha'])) {
-                $this->error('图片验证码不能为空!');
+                $this->error(lang('验证码不能为空！'));
             }
             $captchaId = empty($data['captcha_id']) ? '' : $data['captcha_id'];
             if (!cmf_captcha_check($data['captcha'], $captchaId, false)) {
-                $this->error('图片验证码错误!');
+                $this->error(lang('验证码错误！'));
             }
 
             $registerCaptcha = session('register_captcha');
@@ -56,7 +56,7 @@ class VerificationCodeController extends HomeBaseController
 
             if ($registerCaptcha == $data['captcha']) {
                 cmf_captcha_check($data['captcha'], $captchaId, true);
-                $this->error('请输入新图片验证码!');
+                $this->error(lang('请输入新验证码！'));
             }
         }
 
@@ -67,7 +67,7 @@ class VerificationCodeController extends HomeBaseController
         } else if (cmf_check_mobile($data['username'])) {
             $accountType = 'mobile';
         } else {
-            $this->error("请输入正确的手机或者邮箱格式!");
+            $this->error(lang('请输入正确的手机或者邮箱格式！'));
         }
 
         if (isset($data['type']) && $data['type'] == 'register') {
@@ -78,7 +78,7 @@ class VerificationCodeController extends HomeBaseController
             }
 
             if ($findUserCount > 0) {
-                $this->error('账号已注册！');
+                $this->error(lang('您的账号已注册过！'));
             }
         }
 
@@ -86,14 +86,14 @@ class VerificationCodeController extends HomeBaseController
 
         $code = cmf_get_verification_code($data['username']);
         if (empty($code)) {
-            $this->error("验证码发送过多,请明天再试!");
+            $this->error(lang('验证码发送过多,请明天再试！'));
         }
 
         if ($accountType == 'email') {
 
             $emailTemplate = cmf_get_option('email_template_verification_code');
 
-            $user    = cmf_get_current_user();
+            $user = cmf_get_current_user();
             if ($user === false) {
                 $username = $data['username'];
             } else {
@@ -102,14 +102,14 @@ class VerificationCodeController extends HomeBaseController
 
             $message = htmlspecialchars_decode($emailTemplate['template']);
             $message = $this->view->display($message, ['code' => $code, 'username' => $username]);
-            $subject = empty($emailTemplate['subject']) ? 'ThinkCMF验证码' : $emailTemplate['subject'];
+            $subject = empty($emailTemplate['subject']) ? lang('数字验证码') : $emailTemplate['subject'];
             $result  = cmf_send_email($data['username'], $subject, $message);
 
             if (empty($result['error'])) {
                 cmf_verification_code_log($data['username'], $code);
-                $this->success("验证码已经发送成功!");
+                $this->success(lang('验证码已经发送成功！'));
             } else {
-                $this->error("邮箱验证码发送失败:" . $result['message']);
+                $this->error(lang('邮箱验证码发送失败！'));
             }
 
         } else if ($accountType == 'mobile') {
@@ -122,7 +122,7 @@ class VerificationCodeController extends HomeBaseController
             }
 
             if ($result === false) {
-                $this->error('未安装验证码发送插件,请联系管理员!');
+                $this->error(lang('未安装验证码发送插件,请联系管理员！'));
             }
 
             $expireTime = empty($result['expire_time']) ? 0 : $result['expire_time'];
@@ -132,7 +132,7 @@ class VerificationCodeController extends HomeBaseController
             if (!empty($result['message'])) {
                 $this->success($result['message']);
             } else {
-                $this->success('验证码已经发送成功!');
+                $this->success(lang('验证码已经发送成功！'));
             }
 
         }

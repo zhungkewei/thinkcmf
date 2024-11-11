@@ -115,15 +115,15 @@ class ProfileController extends UserBaseController
                 'repassword'   => 'require|min:6|max:32',
             ]);
             $validate->message([
-                'old_password.require' => lang('old_password_is_required'),
-                'old_password.max'     => lang('old_password_is_too_long'),
-                'old_password.min'     => lang('old_password_is_too_short'),
-                'password.require'     => lang('password_is_required'),
-                'password.max'         => lang('password_is_too_long'),
-                'password.min'         => lang('password_is_too_short'),
-                'repassword.require'   => lang('repeat_password_is_required'),
-                'repassword.max'       => lang('repeat_password_is_too_long'),
-                'repassword.min'       => lang('repeat_password_is_too_short'),
+                'old_password.require' => lang('旧密码不能为空！'),
+                'old_password.max'     => lang('旧密码不能超过32个字符！'),
+                'old_password.min'     => lang('旧密码不能小于6个字符！'),
+                'password.require'     => lang('新密码不能为空！'),
+                'password.max'         => lang('新密码不能超过32个字符！'),
+                'password.min'         => lang('新密码不能小于6个字符！'),
+                'repassword.require'   => lang('重复密码不能为空！'),
+                'repassword.max'       => lang('重复密码不能超过32个字符！'),
+                'repassword.min'       => lang('重复密码不能小于6个字符！'),
             ]);
 
             $data = $this->request->post();
@@ -138,10 +138,10 @@ class ProfileController extends UserBaseController
                     $this->success(lang('change_success'));
                     break;
                 case 1:
-                    $this->error(lang('password_repeat_wrong'));
+                    $this->error(lang('密码输入不一致!'));
                     break;
                 case 2:
-                    $this->error(lang('old_password_is_wrong'));
+                    $this->error(lang('原始密码不正确！'));
                     break;
                 default :
                     $this->error(lang('ERROR'));
@@ -266,10 +266,10 @@ class ProfileController extends UserBaseController
                 'verification_code' => 'require',
             ]);
             $validate->message([
-                'username.require'          => '手机号不能为空',
-                'username.number'           => '手机号只能为数字',
-                'username.unique'           => '手机号已存在',
-                'verification_code.require' => '验证码不能为空',
+                'username.require'          => lang('手机号不能为空！'),
+                'username.number'           => lang('手机号只能为数字！'),
+                'username.unique'           => lang('手机号已存在！'),
+                'verification_code.require' => lang('数字验证码不能为空！'),
             ]);
 
             $data = $this->request->post();
@@ -284,10 +284,10 @@ class ProfileController extends UserBaseController
             $log       = $userModel->bindingMobile($data);
             switch ($log) {
                 case 0:
-                    $this->success('手机号绑定成功');
+                    $this->success(lang('手机号绑定成功！'));
                     break;
                 default :
-                    $this->error('未受理的请求');
+                    $this->error(lang('未受理的请求！'));
             }
         } else {
             $this->error(lang('illegal request'));
@@ -306,10 +306,10 @@ class ProfileController extends UserBaseController
                 'verification_code' => 'require',
             ]);
             $validate->message([
-                'username.require'          => '邮箱地址不能为空',
-                'username.email'            => '邮箱地址不正确',
-                'username.unique'           => '邮箱地址已存在',
-                'verification_code.require' => '验证码不能为空',
+                'username.require'          => lang('邮箱不能为空！'),
+                'username.email'            => lang('邮箱格式不正确！'),
+                'username.unique'           => lang('邮箱已存在！'),
+                'verification_code.require' => lang('数字验证码不能为空！'),
             ]);
 
             $data = $this->request->post();
@@ -324,10 +324,10 @@ class ProfileController extends UserBaseController
             $log       = $userModel->bindingEmail($data);
             switch ($log) {
                 case 0:
-                    $this->success('邮箱绑定成功');
+                    $this->success(lang('邮箱绑定成功！'));
                     break;
                 default :
-                    $this->error('未受理的请求');
+                    $this->error(lang('未受理的请求！'));
             }
         } else {
             $this->error(lang('illegal request'));

@@ -298,7 +298,7 @@ hello;
                 $tourl = cmf_url('user/Login/index');
             }
             if ($this->request->isAjax()) {
-                $this->error('您尚未登录', $tourl);
+                $this->error(lang('您尚未登录！'), $tourl);
             } else {
                 $this->redirect($tourl);
             }

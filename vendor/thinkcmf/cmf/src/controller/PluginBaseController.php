@@ -65,11 +65,11 @@ class PluginBaseController extends BaseController
             $pluginModel = new PluginModel();
             $findPlugin  = $pluginModel->where('name', '=', $pluginName)->find();
             if (empty($findPlugin)) {
-                $this->error('插件未安装!');
+                $this->error(lang('插件未安装！'));
             }
 
             if ($findPlugin['status'] != 1) {
-                $this->error('插件未启用!');
+                $this->error(lang('插件未启用！'));
             }
 
 
