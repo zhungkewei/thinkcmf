@@ -49,23 +49,28 @@ class PublicController extends RestBaseController
      */
     public function login()
     {
-        $this->error('请先使用原来登录页面登录，登录获取token 后再使用后台API');
+        //增加验证码之后可直接使用此api注释下面一行
+        //$this->error('请先使用原来登录页面登录，登录获取token 后再使用后台API');
         // TODO 增加最后登录信息记录,如 ip
         $validate = new \think\Validate();
         $validate->rule([
             'username' => 'require',
-            'password' => 'require'
+            'password' => 'require',
+            'captcha'  => 'require'
         ]);
         $validate->message([
             'username.require' => '请输入手机号,邮箱或用户名!',
-            'password.require' => '请输入您的密码!'
+            'password.require' => '请输入您的密码!',
+            'captcha.require'  => '请输入验证码'
         ]);
 
         $data = $this->request->param();
         if (!$validate->check($data)) {
             $this->error($validate->getError());
         }
-
+        if (!cmf_captcha_check($data['captcha'])) {
+            $this->error(lang('CAPTCHA_NOT_RIGHT'));
+        }
         $userQuery = Db::name("user");
         if (Validate::is($data['username'], 'email')) {
             $userQuery = $userQuery->where('user_email', $data['username']);
